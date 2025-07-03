@@ -5,6 +5,7 @@ import lombok.Data;
 
 @Data
 public class RegisterUserRequest {
+    private int age;
     private String firstName;
     private String lastName;
     private String email;
@@ -12,5 +13,5 @@ public class RegisterUserRequest {
     private String address;
     private String phone;
     private UserGender gender;
-    private int age;
+
 }
