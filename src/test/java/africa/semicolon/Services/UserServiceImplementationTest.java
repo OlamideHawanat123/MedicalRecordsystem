@@ -9,8 +9,6 @@ import africa.semicolon.dtos.responses.RegisterUserResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Commit;
-import org.springframework.transaction.annotation.Transactional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,13 +21,13 @@ class UserServiceImplementationTest {
     private UserRepository userRepository;
 
     @Test
-    public void testThatUserRegistrationRequestRegistersUser(){
+    public void testThatUserRegistrationRequestRegistersUser() {
         RegisterUserRequest registerUserRequest = new RegisterUserRequest();
         registerUserRequest.setAge(20);
         registerUserRequest.setAddress("3, Ebute Olowo Street, Okepopo");
         registerUserRequest.setPhone("123456789");
         registerUserRequest.setGender(UserGender.MALE);
-        registerUserRequest.setEmail("olamide@gmail.com");
+        registerUserRequest.setEmail("Olamide@gmail.com");
         registerUserRequest.setPassword("password");
         registerUserRequest.setLastName("Olamide");
         registerUserRequest.setFirstName("Olamide");
@@ -39,7 +37,7 @@ class UserServiceImplementationTest {
     }
 
     @Test
-    public void testThatUserRegistrationThrowsAnExceptionIfYouRegisterWithTheSameEmail(){
+    public void testThatUserRegistrationThrowsAnExceptionIfYouRegisterWithTheSameEmail() {
         RegisterUserRequest registerUserRequest = new RegisterUserRequest();
         registerUserRequest.setAge(20);
         registerUserRequest.setAddress("3, Ebute Olowo Street, Okepopo");
@@ -50,19 +48,36 @@ class UserServiceImplementationTest {
         registerUserRequest.setLastName("Olamide");
         registerUserRequest.setFirstName("Olamide");
 
-        assertThrows(EmailAlreadyExistException.class, () ->{
+        assertThrows(EmailAlreadyExistException.class, () -> {
             userService.registerUser(registerUserRequest);
         });
     }
 
     @Test
-    public void testThatUserRegistrationThrowsAnExceptionIfEmailAndPasswordFieldsAreNull(){
+    public void testThatUserRegistrationThrowsAnExceptionIfEmailIsNull() {
         RegisterUserRequest registerUserRequest = new RegisterUserRequest();
         registerUserRequest.setAge(20);
         registerUserRequest.setAddress("3, Ebute Olowo Street, Okepopo");
         registerUserRequest.setPhone("123456789");
         registerUserRequest.setGender(UserGender.MALE);
         registerUserRequest.setEmail("");
+        registerUserRequest.setPassword("reddit");
+        registerUserRequest.setLastName("Olamide");
+        registerUserRequest.setFirstName("Olamide");
+
+        assertThrows(EmptyDetailsException.class, () -> {
+            userService.registerUser(registerUserRequest);
+        });
+    }
+
+    @Test
+    public void testThatUserRegistrationThrowsAnExceptionIfPasswordIsNull() {
+        RegisterUserRequest registerUserRequest = new RegisterUserRequest();
+        registerUserRequest.setAge(20);
+        registerUserRequest.setAddress("3, Ebute Olowo Street, Okepopo");
+        registerUserRequest.setPhone("123456789");
+        registerUserRequest.setGender(UserGender.MALE);
+        registerUserRequest.setEmail("Mastr@gmail.com");
         registerUserRequest.setPassword("");
         registerUserRequest.setLastName("Olamide");
         registerUserRequest.setFirstName("Olamide");
@@ -70,7 +85,6 @@ class UserServiceImplementationTest {
         assertThrows(EmptyDetailsException.class, () -> {
             userService.registerUser(registerUserRequest);
         });
-    
     }
 
 }

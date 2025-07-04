@@ -11,7 +11,7 @@ public class Mapper {
         user.setGender(registerUserRequest.getGender());
         user.setAddress(registerUserRequest.getAddress());
         user.setAddress(registerUserRequest.getAddress());
-        user.setEmail(registerUserRequest.getEmail());
+        user.setEmail(registerUserRequest.getEmail().toLowerCase());
         user.setPassword(registerUserRequest.getPassword());
         user.setGender(registerUserRequest.getGender());
         user.setAge(registerUserRequest.getAge());

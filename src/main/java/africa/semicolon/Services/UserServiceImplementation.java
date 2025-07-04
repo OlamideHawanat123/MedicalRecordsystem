@@ -19,7 +19,7 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public RegisterUserResponse registerUser(RegisterUserRequest registerUserRequest) {
-        User user = new User();
+        User user;
         user = Mapper.mapRequestToUser(registerUserRequest);
 
         if(emptyEmailAndPassword(registerUserRequest.getEmail(), registerUserRequest.getPassword()))throw new EmptyDetailsException("Email or password cannot be empty");
