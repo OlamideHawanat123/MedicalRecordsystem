@@ -20,6 +20,7 @@ public class User {
     private String email;
     private UserGender gender;
     private UserRoles role;
+    private boolean isVerified;
 
 
 }

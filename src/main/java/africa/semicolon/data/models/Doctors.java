@@ -10,5 +10,5 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Doctors extends User{
     private String specialization;
     private String licenseId;
-    private boolean isVerified;
+    private boolean isLicenseVerified;
 }

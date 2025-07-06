@@ -3,6 +3,7 @@ package africa.semicolon.Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
@@ -11,6 +12,8 @@ import java.util.Random;
 public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
+    @Autowired
+    private JavaMailSenderImpl mailSender;
 
     public void sendVerificationEmail(String toEmail, String code){
         SimpleMailMessage message = new SimpleMailMessage();
@@ -18,10 +21,11 @@ public class EmailService {
         message.setSubject("Your email verification code");
         message.setText("Your email verification code is: " + code);
         message.setFrom("Medical Record System");
+        mailSender.send(message);
 
     }
 
-    private String generateVerificationCode(){
+    public String generateVerificationCode(){
         return String.valueOf(1000000 + new Random().nextInt(9000000));
     }
 }
