@@ -36,11 +36,12 @@ class UserServiceImplementationTest {
         registerUserRequest.setPassword("password");
         registerUserRequest.setLastName("Olamide");
         registerUserRequest.setFirstName("Olamide");
-        registerUserRequest.setRole(UserRoles.PATIENT);
+        registerUserRequest.setRole(UserRoles.ADMIN);
         RegisterUserResponse response = userService.registerUser(registerUserRequest);
         assertNotNull(response);
         assertEquals("User registered successfully", response.getMessage());
     }
+
 
     @Test
     public void testThatUserGetsSavedInThePatientRepositoryIfRoleIsPatient() {
@@ -49,7 +50,7 @@ class UserServiceImplementationTest {
         registerUserRequest.setAddress("3, Ebute Olowo Street, Okepopo");
         registerUserRequest.setPhone("123456789");
         registerUserRequest.setGender(UserGender.MALE);
-        registerUserRequest.setEmail("Olkide@gmail.com");
+        registerUserRequest.setEmail("pee@gmail.com");
         registerUserRequest.setPassword("ola");
         registerUserRequest.setLastName("Olamide");
         registerUserRequest.setFirstName("Olamide");
@@ -64,7 +65,7 @@ class UserServiceImplementationTest {
     public void testThatUserRegistrationThrowsAnExceptionIfYouRegisterWithTheSameEmail() {
         RegisterUserRequest registerUserRequest = new RegisterUserRequest();
         registerUserRequest.setAge(20);
-        registerUserRequest.setAddress("3, Ebute Olowo Street, Okepopo");
+        registerUserRequest.setAddress("3, Ebute Olowo Street, Allen");
         registerUserRequest.setPhone("123456789");
         registerUserRequest.setGender(UserGender.MALE);
         registerUserRequest.setEmail("olamide@gmail.com");

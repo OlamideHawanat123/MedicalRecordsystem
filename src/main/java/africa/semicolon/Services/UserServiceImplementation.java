@@ -19,10 +19,14 @@ public class UserServiceImplementation implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-
     private final UserRepository userRepository;
-    @Autowired
     private PatientRepository patientRepository;
+    @Autowired
+    public UserServiceImplementation(UserRepository userRepository, PatientRepository patientRepository) {
+        this.userRepository = userRepository;
+        this.patientRepository = patientRepository;
+    }
+
 
     public UserServiceImplementation(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -30,22 +34,19 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public RegisterUserResponse registerUser(RegisterUserRequest registerUserRequest) {
-        User user;
-        Patient patient;
-        user = Mapper.mapRequestToUser(registerUserRequest,passwordEncoder);
-
+        User user = Mapper.mapRequestToUser(registerUserRequest,passwordEncoder);
+        Patient patient = Mapper.mapRequestToPatient(user);
 
         if(emptyEmailAndPassword(registerUserRequest.getEmail(), registerUserRequest.getPassword()))throw new EmptyDetailsException("Email or password cannot be empty");
-        if(userRepository.existsByEmail(registerUserRequest.getEmail()))throw new EmailAlreadyExistException("Email already exist");
-
-
-        if(isPatient(registerUserRequest.getRole())){
-            patient = Mapper.mapRequestToPatient(user);
-            patientRepository.save(patient);}
-
+        if(userRepository.existsByEmail(registerUserRequest.getEmail().trim().toLowerCase()))throw new EmailAlreadyExistException("Email already exist");
+        EmailService emailService = new EmailService();
+//        emailService.sendVerificationEmail(registerUserRequest.getEmail().trim().toLowerCase());
+        if(isPatient(registerUserRequest.getRole())) patientRepository.save(patient);
         userRepository.save(user);
+
         RegisterUserResponse registerUserResponse = new RegisterUserResponse();
         registerUserResponse.setMessage("User registered successfully");
+        registerUserResponse.setId(user.getId());
         return registerUserResponse;
     }
 

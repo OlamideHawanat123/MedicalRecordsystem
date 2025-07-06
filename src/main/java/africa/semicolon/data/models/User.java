@@ -2,6 +2,7 @@ package africa.semicolon.data.models;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
@@ -15,6 +16,7 @@ public class User {
     private String phoneNumber;
     private String address;
     private String password;
+    @Indexed(unique=true)
     private String email;
     private UserGender gender;
     private UserRoles role;

@@ -18,6 +18,7 @@ public class EmailService {
         message.setSubject("Your email verification code");
         message.setText("Your email verification code is: " + code);
         message.setFrom("Medical Record System");
+
     }
 
     private String generateVerificationCode(){

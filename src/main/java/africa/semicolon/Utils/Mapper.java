@@ -14,7 +14,7 @@ public class Mapper {
         user.setGender(registerUserRequest.getGender());
         user.setAddress(registerUserRequest.getAddress());
         user.setAddress(registerUserRequest.getAddress());
-        user.setEmail(registerUserRequest.getEmail().toLowerCase());
+        user.setEmail(registerUserRequest.getEmail().trim().toLowerCase());
         user.setPassword(passwordEncoder.encode(registerUserRequest.getPassword()));
         user.setGender(registerUserRequest.getGender());
         user.setAge(registerUserRequest.getAge());
@@ -28,7 +28,7 @@ public class Mapper {
         patient.setLastName(user.getLastName());
         patient.setGender(user.getGender());
         patient.setAddress(user.getAddress());
-        patient.setEmail(user.getEmail().toLowerCase());
+        patient.setEmail(user.getEmail().trim().toLowerCase());
         patient.setPassword(user.getPassword());
         patient.setAge(user.getAge());
         patient.setPhoneNumber(user.getPhoneNumber());
