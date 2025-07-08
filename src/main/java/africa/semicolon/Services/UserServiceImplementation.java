@@ -2,6 +2,7 @@ package africa.semicolon.Services;
 
 import africa.semicolon.Exceptions.EmailAlreadyExistException;
 import africa.semicolon.Exceptions.EmptyDetailsException;
+import africa.semicolon.Exceptions.FailedVerificationException;
 import africa.semicolon.Utils.Mapper;
 import africa.semicolon.data.models.Patient;
 import africa.semicolon.data.models.User;
@@ -14,10 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserServiceImplementation implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private VerificationService verificationService;
 
     private final UserRepository userRepository;
     private PatientRepository patientRepository;
@@ -40,14 +46,28 @@ public class UserServiceImplementation implements UserService {
         if(emptyEmailAndPassword(registerUserRequest.getEmail(), registerUserRequest.getPassword()))throw new EmptyDetailsException("Email or password cannot be empty");
         if(userRepository.existsByEmail(registerUserRequest.getEmail().trim().toLowerCase()))throw new EmailAlreadyExistException("Email already exist");
         EmailService emailService = new EmailService();
-//        emailService.sendVerificationEmail(registerUserRequest.getEmail().trim().toLowerCase());
         if(isPatient(registerUserRequest.getRole())) patientRepository.save(patient);
         userRepository.save(user);
 
         RegisterUserResponse registerUserResponse = new RegisterUserResponse();
         registerUserResponse.setMessage("User registered successfully");
         registerUserResponse.setId(user.getId());
+
+        verificationService.sendVerification(registerUserRequest.getEmail());
         return registerUserResponse;
+    }
+
+    public boolean confirm(String email, String code){
+        boolean valid = verificationService.verifyConfirmationCode(email, code);
+        if(!valid) throw new FailedVerificationException("Verification code does not match!");
+
+        Optional<User> findUser = userRepository.findByEmail(email);
+        if(findUser.isPresent()){
+            User user = findUser.get();
+            user.setVerified(true);
+            userRepository.save(user);
+        }
+        return true;
     }
 
     private boolean emptyEmailAndPassword(String email, String password){
