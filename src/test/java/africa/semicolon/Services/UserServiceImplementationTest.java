@@ -32,7 +32,7 @@ class UserServiceImplementationTest {
         registerUserRequest.setAddress("3, Ebute Olowo Street, Okepop o");
         registerUserRequest.setPhone("123456789");
         registerUserRequest.setGender(UserGender.MALE);
-        registerUserRequest.setEmail("Olamide@gmail.com");
+        registerUserRequest.setEmail("raheemhawanat@gmail.com");
         registerUserRequest.setPassword("password");
         registerUserRequest.setLastName("Olamide");
         registerUserRequest.setFirstName("Olamide");
@@ -68,7 +68,7 @@ class UserServiceImplementationTest {
         registerUserRequest.setAddress("3, Ebute Olowo Street, Allen");
         registerUserRequest.setPhone("123456789");
         registerUserRequest.setGender(UserGender.MALE);
-        registerUserRequest.setEmail("olamide@gmail.com");
+        registerUserRequest.setEmail("raheemhawanat@gmail.com");
         registerUserRequest.setPassword("password");
         registerUserRequest.setLastName("Olamide");
         registerUserRequest.setFirstName("Olamide");

@@ -14,7 +14,6 @@ import africa.semicolon.dtos.responses.RegisterUserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 @Service
@@ -33,11 +32,6 @@ public class UserServiceImplementation implements UserService {
         this.patientRepository = patientRepository;
     }
 
-
-    public UserServiceImplementation(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
-
     @Override
     public RegisterUserResponse registerUser(RegisterUserRequest registerUserRequest) {
         User user = Mapper.mapRequestToUser(registerUserRequest,passwordEncoder);
@@ -45,7 +39,6 @@ public class UserServiceImplementation implements UserService {
 
         if(emptyEmailAndPassword(registerUserRequest.getEmail(), registerUserRequest.getPassword()))throw new EmptyDetailsException("Email or password cannot be empty");
         if(userRepository.existsByEmail(registerUserRequest.getEmail().trim().toLowerCase()))throw new EmailAlreadyExistException("Email already exist");
-        EmailService emailService = new EmailService();
         if(isPatient(registerUserRequest.getRole())) patientRepository.save(patient);
         userRepository.save(user);
 
@@ -71,7 +64,7 @@ public class UserServiceImplementation implements UserService {
     }
 
     private boolean emptyEmailAndPassword(String email, String password){
-        return email.isEmpty() || password.isEmpty();
+        return email == null || email.isBlank() || password == null || password.isBlank();
     }
 
     private boolean isPatient(UserRoles role){

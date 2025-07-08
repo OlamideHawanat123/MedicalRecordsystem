@@ -20,12 +20,12 @@ public class EmailService {
         message.setTo(toEmail);
         message.setSubject("Your email verification code");
         message.setText("Your email verification code is: " + code);
-        message.setFrom("Medical Record System");
+        message.setFrom("raheemhawanat@gmail.com");
         mailSender.send(message);
 
     }
 
     public String generateVerificationCode(){
-        return String.valueOf(1000000 + new Random().nextInt(9000000));
+        return String.valueOf(100000 + new Random().nextInt(900000));
     }
 }
