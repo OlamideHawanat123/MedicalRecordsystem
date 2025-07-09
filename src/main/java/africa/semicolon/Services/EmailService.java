@@ -18,8 +18,10 @@ public class EmailService {
     public void sendVerificationEmail(String toEmail, String code){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(toEmail);
-        message.setSubject("Your email verification code");
-        message.setText("Your email verification code is: " + code);
+        message.setSubject("Your email verification code\n");
+        message.setText("Your email verification code is: " + code + """
+                Please, go back to the website and enter the code you received\s
+               \s""");
         message.setFrom("raheemhawanat@gmail.com");
         mailSender.send(message);
 

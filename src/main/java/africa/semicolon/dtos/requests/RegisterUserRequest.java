@@ -15,5 +15,7 @@ public class RegisterUserRequest {
     private String phone;
     private UserGender gender;
     private UserRoles role;
+    private String specialization;
+    private String licenseId;
 
 }

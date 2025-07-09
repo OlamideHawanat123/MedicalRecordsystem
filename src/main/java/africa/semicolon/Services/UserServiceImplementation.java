@@ -1,16 +1,16 @@
 package africa.semicolon.Services;
 
-import africa.semicolon.Exceptions.EmailAlreadyExistException;
-import africa.semicolon.Exceptions.EmptyDetailsException;
-import africa.semicolon.Exceptions.FailedVerificationException;
+import africa.semicolon.Exceptions.*;
 import africa.semicolon.Utils.Mapper;
-import africa.semicolon.data.models.Patient;
-import africa.semicolon.data.models.User;
-import africa.semicolon.data.models.UserRoles;
+import africa.semicolon.data.models.*;
+import africa.semicolon.data.repositories.AdminRepository;
 import africa.semicolon.data.repositories.PatientRepository;
+import africa.semicolon.data.repositories.PendingDoctorRepository;
 import africa.semicolon.data.repositories.UserRepository;
 import africa.semicolon.dtos.requests.RegisterUserRequest;
+import africa.semicolon.dtos.requests.UserLoginRequest;
 import africa.semicolon.dtos.responses.RegisterUserResponse;
+import africa.semicolon.dtos.responses.UserLoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,29 +26,39 @@ public class UserServiceImplementation implements UserService {
 
     private final UserRepository userRepository;
     private PatientRepository patientRepository;
+    private PendingDoctorRepository pendingDoctorRepository;
+    private AdminRepository adminRepository;
     @Autowired
-    public UserServiceImplementation(UserRepository userRepository, PatientRepository patientRepository) {
+    public UserServiceImplementation(UserRepository userRepository, PatientRepository patientRepository, PendingDoctorRepository pendingDoctorRepository) {
+        this.pendingDoctorRepository = pendingDoctorRepository;
         this.userRepository = userRepository;
         this.patientRepository = patientRepository;
     }
 
     @Override
     public RegisterUserResponse registerUser(RegisterUserRequest registerUserRequest) {
+        validateRequest(registerUserRequest);
         User user = Mapper.mapRequestToUser(registerUserRequest,passwordEncoder);
-        Patient patient = Mapper.mapRequestToPatient(user);
 
-        if(emptyEmailAndPassword(registerUserRequest.getEmail(), registerUserRequest.getPassword()))throw new EmptyDetailsException("Email or password cannot be empty");
-        if(userRepository.existsByEmail(registerUserRequest.getEmail().trim().toLowerCase()))throw new EmailAlreadyExistException("Email already exist");
-        if(isPatient(registerUserRequest.getRole())) patientRepository.save(patient);
-        userRepository.save(user);
+        if(isPatient(registerUserRequest.getRole()))return registerPatient(user);
+        else if(isDoctor(registerUserRequest.getRole()))return  registerDoctor(user);
 
-        RegisterUserResponse registerUserResponse = new RegisterUserResponse();
-        registerUserResponse.setMessage("User registered successfully");
-        registerUserResponse.setId(user.getId());
-
-        verificationService.sendVerification(registerUserRequest.getEmail());
-        return registerUserResponse;
+        throw new InvalidRoleException("Invalid user role: " + registerUserRequest.getRole());
     }
+
+    @Override
+    public UserLoginResponse logUserIn(UserLoginRequest login) {
+        if(emptyEmailAndPassword(login.getEmail(), login.getPassword()))throw new EmptyDetailsException("Email or password cannot be empty");
+        if(!userRepository.existsByEmail(login.getEmail())) throw new UserNotFound("User doesn't exist");
+
+        User user = userRepository.findByEmail(login.getEmail().trim().toLowerCase()).orElseThrow();
+        if(!passwordEncoder.matches(login.getPassword(), user.getPassword())) throw new InvalidCredentialsException("Invalid details!");
+
+        UserLoginResponse loginResponse = new UserLoginResponse();
+        loginResponse.setMessage("login successful!");
+        return loginResponse;
+    }
+
 
     public boolean confirm(String email, String code){
         boolean valid = verificationService.verifyConfirmationCode(email, code);
@@ -63,6 +73,7 @@ public class UserServiceImplementation implements UserService {
         return true;
     }
 
+
     private boolean emptyEmailAndPassword(String email, String password){
         return email == null || email.isBlank() || password == null || password.isBlank();
     }
@@ -70,4 +81,61 @@ public class UserServiceImplementation implements UserService {
     private boolean isPatient(UserRoles role){
         return role == UserRoles.PATIENT;
     }
+
+    private boolean isDoctor(UserRoles role){
+        return role == UserRoles.DOCTOR;
+    }
+
+    private void validateRequest(RegisterUserRequest registerUserRequest) {
+        String email = registerUserRequest.getEmail();
+        String password = registerUserRequest.getPassword();
+
+        if(emptyEmailAndPassword(email, password))throw new EmptyDetailsException("Email or password cannot be empty");
+        if(userRepository.existsByEmail(email))throw new EmailAlreadyExistException("Email already exist");
+    }
+
+    private RegisterUserResponse registerPatient(User user) {
+        Patient patient = Mapper.mapUserToPatient(user);
+        patientRepository.save(patient);
+        userRepository.save(patient);
+        verificationService.sendVerification(user.getEmail());
+
+        RegisterUserResponse registerUserResponse = new RegisterUserResponse();
+        registerUserResponse.setMessage("User registered successfully");
+        registerUserResponse.setId(user.getId());
+        return registerUserResponse;
+    }
+
+    private RegisterUserResponse registerDoctor(User user) {
+        userRepository.save(user);
+        notifyAdminOfRequest(user);
+
+        RegisterUserResponse registerUserResponse = new RegisterUserResponse();
+        registerUserResponse.setMessage("Pending Registration, awaiting admin's approval");
+        registerUserResponse.setId(user.getId());
+        return registerUserResponse;
+    }
+
+    private void notifyAdminOfRequest(User user) {
+        Doctors doctor = Mapper.mapUserToDoctors(user);
+        pendingDoctorRepository.save(doctor);
+    }
+
+    private RegisterUserResponse registerAdmin(User user){
+        userRepository.save(user);
+        notifySuperAdminOfRequest(user);
+
+        RegisterUserResponse registerUserResponse = new RegisterUserResponse();
+        registerUserResponse.setMessage("Registration successful, waiting for approval");
+        registerUserResponse.setId(user.getId());
+        return registerUserResponse;
+
+
+
+    }
+
+    private void notifySuperAdminOfRequest(User user) {
+        Admin admin = Mapper.mapUserToPatient(user);
+    }
+
 }

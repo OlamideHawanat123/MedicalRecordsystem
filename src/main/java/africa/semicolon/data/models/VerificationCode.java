@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.Date;
 
 @Data
-@Document(collection = "Verification codes")
+@Document(collection = "Verification codes ")
 public class VerificationCode {
     @Id
     private String id;
