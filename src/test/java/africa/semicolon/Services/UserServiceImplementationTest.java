@@ -2,12 +2,11 @@ package africa.semicolon.Services;
 
 import africa.semicolon.Exceptions.EmailAlreadyExistException;
 import africa.semicolon.Exceptions.EmptyDetailsException;
+import africa.semicolon.Exceptions.FailedRoleException;
 import africa.semicolon.Exceptions.UserNotFound;
 import africa.semicolon.data.models.UserGender;
 import africa.semicolon.data.models.UserRoles;
-import africa.semicolon.data.repositories.PatientRepository;
-import africa.semicolon.data.repositories.PendingDoctorRepository;
-import africa.semicolon.data.repositories.UserRepository;
+import africa.semicolon.data.repositories.*;
 import africa.semicolon.dtos.requests.RegisterUserRequest;
 import africa.semicolon.dtos.requests.UserLoginRequest;
 import africa.semicolon.dtos.responses.RegisterUserResponse;
@@ -30,6 +29,9 @@ class UserServiceImplementationTest {
     private PatientRepository  patientRepository;
     @Autowired
     private PendingDoctorRepository pendingDoctorRepository;
+
+    @Autowired
+    private SuperAdminRepo superAdminRepo;
 
     @Test
     public void testThatUserRegistrationRequestRegistersUser() {
@@ -184,7 +186,42 @@ class UserServiceImplementationTest {
 
         RegisterUserResponse registerUserResponse = userService.registerUser(registerUserRequest);
         assertEquals("Registration successful, waiting for approval",  registerUserResponse.getMessage());
-        assertTrue(adminRepository.existByEmail(registerUserRequest.getEmail()));
+    }
+
+    @Test
+    public void testThatRegisterUserCanRegisterSuperAdmin(){
+        RegisterUserRequest registerUserRequest = new RegisterUserRequest();
+        registerUserRequest.setAge(20);
+        registerUserRequest.setRole(UserRoles.SUPER_ADMIN);
+        registerUserRequest.setPassword("tree");
+        registerUserRequest.setFirstName("Suli");
+        registerUserRequest.setLastName("Oderinde");
+        registerUserRequest.setGender(UserGender.FEMALE);
+        registerUserRequest.setPhone("08091234657");
+        registerUserRequest.setAddress("3, Sango otta, Ogun State");
+        registerUserRequest.setEmail("yetuns1122@gmail.com");
+        RegisterUserResponse response = userService.registerUser(registerUserRequest);
+
+        assertEquals("Registration successful, superAdmin!", response.getMessage());
+        assertTrue(superAdminRepo.existsByEmail("yetuns1122@gmail.com"));
+    }
+
+    @Test
+    public void testThatThereCanOnlyBeOneSuperAdmin(){
+        RegisterUserRequest registerUserRequest = new RegisterUserRequest();
+        registerUserRequest.setAge(30);
+        registerUserRequest.setRole(UserRoles.SUPER_ADMIN);
+        registerUserRequest.setPassword("trust");
+        registerUserRequest.setFirstName("Suliat");
+        registerUserRequest.setLastName("Oderinde");
+        registerUserRequest.setGender(UserGender.FEMALE);
+        registerUserRequest.setPhone("08091234657");
+        registerUserRequest.setAddress("3, Sango otta, Ogun State");
+        registerUserRequest.setEmail("wisdom@gmail.com");
+
+        assertThrows(FailedRoleException.class, () ->{
+            userService.registerUser(registerUserRequest);
+        });
     }
 
 

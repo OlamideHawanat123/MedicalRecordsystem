@@ -1,9 +1,6 @@
 package africa.semicolon.Utils;
 
-import africa.semicolon.data.models.Admin;
-import africa.semicolon.data.models.Doctors;
-import africa.semicolon.data.models.Patient;
-import africa.semicolon.data.models.User;
+import africa.semicolon.data.models.*;
 import africa.semicolon.dtos.requests.RegisterUserRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -36,7 +33,7 @@ public class Mapper {
         return patient;
     }
 
-    public static Doctors mapUserToDoctors(User user, Register){
+    public static Doctors mapUserToDoctors(User user){
         Doctors doctors = new Doctors();
         doctors.setFirstName(user.getFirstName());
         doctors.setLastName(user.getLastName());
@@ -54,6 +51,20 @@ public class Mapper {
 
     public static Admin mapUsersToAdmin(User user){
         Admin admin = new Admin();
+        admin.setFirstName(user.getFirstName());
+        admin.setLastName(user.getLastName());
+        admin.setGender(user.getGender());
+        admin.setAddress(user.getAddress());
+        admin.setEmail(user.getEmail().trim().toLowerCase());
+        admin.setPassword(user.getPassword());
+        admin.setAge(user.getAge());
+        admin.setPhoneNumber(user.getPhoneNumber());
+        admin.setRole(user.getRole());
+        return admin;
+    }
+
+    public static SuperAdmin mapUsersToSuperAdmin(User user){
+        SuperAdmin admin = new SuperAdmin();
         admin.setFirstName(user.getFirstName());
         admin.setLastName(user.getLastName());
         admin.setGender(user.getGender());

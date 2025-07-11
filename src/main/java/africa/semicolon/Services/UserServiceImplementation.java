@@ -3,10 +3,7 @@ package africa.semicolon.Services;
 import africa.semicolon.Exceptions.*;
 import africa.semicolon.Utils.Mapper;
 import africa.semicolon.data.models.*;
-import africa.semicolon.data.repositories.AdminRepository;
-import africa.semicolon.data.repositories.PatientRepository;
-import africa.semicolon.data.repositories.PendingDoctorRepository;
-import africa.semicolon.data.repositories.UserRepository;
+import africa.semicolon.data.repositories.*;
 import africa.semicolon.dtos.requests.RegisterUserRequest;
 import africa.semicolon.dtos.requests.UserLoginRequest;
 import africa.semicolon.dtos.responses.RegisterUserResponse;
@@ -27,7 +24,12 @@ public class UserServiceImplementation implements UserService {
     private final UserRepository userRepository;
     private PatientRepository patientRepository;
     private PendingDoctorRepository pendingDoctorRepository;
+    @Autowired
     private AdminRepository adminRepository;
+
+    @Autowired
+    private SuperAdminRepo superAdminRepo;
+
     @Autowired
     public UserServiceImplementation(UserRepository userRepository, PatientRepository patientRepository, PendingDoctorRepository pendingDoctorRepository) {
         this.pendingDoctorRepository = pendingDoctorRepository;
@@ -42,6 +44,9 @@ public class UserServiceImplementation implements UserService {
 
         if(isPatient(registerUserRequest.getRole()))return registerPatient(user);
         else if(isDoctor(registerUserRequest.getRole()))return  registerDoctor(user);
+        else if(isAdmin(registerUserRequest.getRole())) return registerAdmin(user);
+        else if(isSuperAdmin(registerUserRequest.getRole()))return registerSuperAdmin(user);
+        verificationService.sendVerification(user.getEmail());
 
         throw new InvalidRoleException("Invalid user role: " + registerUserRequest.getRole());
     }
@@ -82,8 +87,16 @@ public class UserServiceImplementation implements UserService {
         return role == UserRoles.PATIENT;
     }
 
+    private boolean isAdmin(UserRoles role) {
+        return role == UserRoles.ADMIN;
+    }
+
     private boolean isDoctor(UserRoles role){
         return role == UserRoles.DOCTOR;
+    }
+
+    private boolean isSuperAdmin(UserRoles role) {
+        return role == UserRoles.SUPER_ADMIN;
     }
 
     private void validateRequest(RegisterUserRequest registerUserRequest) {
@@ -98,7 +111,7 @@ public class UserServiceImplementation implements UserService {
         Patient patient = Mapper.mapUserToPatient(user);
         patientRepository.save(patient);
         userRepository.save(patient);
-        verificationService.sendVerification(user.getEmail());
+
 
         RegisterUserResponse registerUserResponse = new RegisterUserResponse();
         registerUserResponse.setMessage("User registered successfully");
@@ -129,13 +142,23 @@ public class UserServiceImplementation implements UserService {
         registerUserResponse.setMessage("Registration successful, waiting for approval");
         registerUserResponse.setId(user.getId());
         return registerUserResponse;
-
-
-
     }
 
     private void notifySuperAdminOfRequest(User user) {
-        Admin admin = Mapper.mapUserToPatient(user);
+        Admin admin = Mapper.mapUsersToAdmin(user);
+        adminRepository.save(admin);
+    }
+
+    private RegisterUserResponse registerSuperAdmin(User user){
+        if(superAdminRepo.count() == 1) throw new FailedRoleException("You should choose to register for another role instead");
+        SuperAdmin superAdmin = Mapper.mapUsersToSuperAdmin(user);
+        userRepository.save(user);
+        superAdminRepo.save(superAdmin);
+
+        RegisterUserResponse registerUserResponse = new RegisterUserResponse();
+        registerUserResponse.setMessage("Registration successful, superAdmin!");
+        registerUserResponse.setId(user.getId());
+        return registerUserResponse;
     }
 
 }
