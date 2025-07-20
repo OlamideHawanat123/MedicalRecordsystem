@@ -118,6 +118,9 @@ public class UserServiceImplementation implements UserService {
         registerUserResponse.setId(user.getId());
         return registerUserResponse;
     }
+    private boolean verifiedDoctor(boolean isVerified){
+        return isVerified;
+    }
 
     private RegisterUserResponse registerDoctor(User user) {
         userRepository.save(user);

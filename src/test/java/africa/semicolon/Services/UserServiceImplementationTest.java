@@ -224,6 +224,13 @@ class UserServiceImplementationTest {
         });
     }
 
+    @Test
+    public void testThatAPatientCanLodgeAComplaint(){
+        LodgeComplaintRequest request = new LodgeComplaintRequest();
+        request.setTitle("Severe headache");
+        request.setDescription("Full details");
 
+
+    }
 
 }
