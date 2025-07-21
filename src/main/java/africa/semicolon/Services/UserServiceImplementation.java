@@ -4,8 +4,10 @@ import africa.semicolon.Exceptions.*;
 import africa.semicolon.Utils.Mapper;
 import africa.semicolon.data.models.*;
 import africa.semicolon.data.repositories.*;
+import africa.semicolon.dtos.requests.LodgeComplaintRequest;
 import africa.semicolon.dtos.requests.RegisterUserRequest;
 import africa.semicolon.dtos.requests.UserLoginRequest;
+import africa.semicolon.dtos.responses.LodgeComplaintResponse;
 import africa.semicolon.dtos.responses.RegisterUserResponse;
 import africa.semicolon.dtos.responses.UserLoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +64,11 @@ public class UserServiceImplementation implements UserService {
         UserLoginResponse loginResponse = new UserLoginResponse();
         loginResponse.setMessage("login successful!");
         return loginResponse;
+    }
+
+    @Override
+    public LodgeComplaintResponse lodgeComplaint(LodgeComplaintRequest request) {
+        return null;
     }
 
 

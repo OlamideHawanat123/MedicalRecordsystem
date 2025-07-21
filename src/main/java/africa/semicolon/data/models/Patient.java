@@ -13,6 +13,7 @@ import java.util.List;
 public class Patient extends User{
     private Double weight;
     private Height height;
+    private Complaint complaint;
 
     @DBRef
     private List<MedicalRecords> medicalRecords;

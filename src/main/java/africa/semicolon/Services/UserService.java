@@ -1,7 +1,9 @@
 package africa.semicolon.Services;
 
+import africa.semicolon.dtos.requests.LodgeComplaintRequest;
 import africa.semicolon.dtos.requests.RegisterUserRequest;
 import africa.semicolon.dtos.requests.UserLoginRequest;
+import africa.semicolon.dtos.responses.LodgeComplaintResponse;
 import africa.semicolon.dtos.responses.RegisterUserResponse;
 import africa.semicolon.dtos.responses.UserLoginResponse;
 
@@ -10,5 +12,5 @@ public interface UserService {
 
     UserLoginResponse logUserIn(UserLoginRequest login);
 
-
+    LodgeComplaintResponse lodgeComplaint(LodgeComplaintRequest request);
 }

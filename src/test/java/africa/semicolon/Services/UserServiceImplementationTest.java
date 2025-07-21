@@ -4,11 +4,14 @@ import africa.semicolon.Exceptions.EmailAlreadyExistException;
 import africa.semicolon.Exceptions.EmptyDetailsException;
 import africa.semicolon.Exceptions.FailedRoleException;
 import africa.semicolon.Exceptions.UserNotFound;
+import africa.semicolon.data.models.ComplaintStatus;
 import africa.semicolon.data.models.UserGender;
 import africa.semicolon.data.models.UserRoles;
 import africa.semicolon.data.repositories.*;
+import africa.semicolon.dtos.requests.LodgeComplaintRequest;
 import africa.semicolon.dtos.requests.RegisterUserRequest;
 import africa.semicolon.dtos.requests.UserLoginRequest;
+import africa.semicolon.dtos.responses.LodgeComplaintResponse;
 import africa.semicolon.dtos.responses.RegisterUserResponse;
 import africa.semicolon.dtos.responses.UserLoginResponse;
 import org.junit.jupiter.api.Test;
@@ -40,7 +43,7 @@ class UserServiceImplementationTest {
         registerUserRequest.setAddress("3, Ebute Olowo Street, Okepop o");
         registerUserRequest.setPhone("123456789");
         registerUserRequest.setGender(UserGender.MALE);
-        registerUserRequest.setEmail("aladeamidatayomide@gmail.com");
+        registerUserRequest.setEmail("raheemhawanat@gmail.com");
         registerUserRequest.setPassword("password");
         registerUserRequest.setLastName("Olamide");
         registerUserRequest.setFirstName("Olamide");
@@ -84,7 +87,7 @@ class UserServiceImplementationTest {
         registerUserRequest.setLastName("Olamide");
         registerUserRequest.setFirstName("Olamide");
         registerUserRequest.setRole(UserRoles.PATIENT);
-        RegisterUserResponse response = userService.registerUser(registerUserRequest);
+        userService.registerUser(registerUserRequest);
 
         assertTrue(patientRepository.existsByEmail(registerUserRequest.getEmail()));
     }
@@ -230,7 +233,9 @@ class UserServiceImplementationTest {
         request.setTitle("Severe headache");
         request.setDescription("Full details");
 
-
+        LodgeComplaintResponse response = userService.lodgeComplaint(request);
+        assertNotNull(response);
+        assertEquals("complaint lodged successfully, awaiting confirmation", response.getMessage());
     }
 
 }
