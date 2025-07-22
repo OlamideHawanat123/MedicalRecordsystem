@@ -35,6 +35,8 @@ class UserServiceImplementationTest {
 
     @Autowired
     private SuperAdminRepo superAdminRepo;
+    @Autowired
+    private ComplaintsRepository complaintsRepository;
 
     @Test
     public void testThatUserRegistrationRequestRegistersUser() {
@@ -235,6 +237,7 @@ class UserServiceImplementationTest {
 
         LodgeComplaintResponse response = userService.lodgeComplaint(request);
         assertNotNull(response);
+        assertTrue(complaintsRepository.existsByTitle("severe headache"));
         assertEquals("complaint lodged successfully, awaiting confirmation", response.getMessage());
     }
 

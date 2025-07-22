@@ -1,6 +1,7 @@
 package africa.semicolon.Utils;
 
 import africa.semicolon.data.models.*;
+import africa.semicolon.dtos.requests.LodgeComplaintRequest;
 import africa.semicolon.dtos.requests.RegisterUserRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -75,5 +76,12 @@ public class Mapper {
         admin.setPhoneNumber(user.getPhoneNumber());
         admin.setRole(user.getRole());
         return admin;
+    }
+
+    public static Complaint mapDetailsToComplaint(LodgeComplaintRequest request){
+        Complaint complaint = new Complaint();
+        complaint.setTitle(request.getTitle());
+        complaint.setDescription(request.getDescription());
+        complaint.setUserId();
     }
 }

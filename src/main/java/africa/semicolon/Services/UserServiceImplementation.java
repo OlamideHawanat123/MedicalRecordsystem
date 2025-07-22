@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Optional;
 
+import static java.time.LocalDateTime.now;
+
 @Service
 public class UserServiceImplementation implements UserService {
     @Autowired
@@ -31,6 +33,9 @@ public class UserServiceImplementation implements UserService {
 
     @Autowired
     private SuperAdminRepo superAdminRepo;
+
+    @Autowired
+    private ComplaintsRepository complaintsRepository;
 
     @Autowired
     public UserServiceImplementation(UserRepository userRepository, PatientRepository patientRepository, PendingDoctorRepository pendingDoctorRepository) {
@@ -68,7 +73,14 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public LodgeComplaintResponse lodgeComplaint(LodgeComplaintRequest request) {
-        return null;
+        request.setTitle(request.getTitle());
+        request.setDescription(request.getDescription());
+        request.setDateAndTime( now());
+//        complaintsRepository.save(request)
+
+        LodgeComplaintResponse response = new LodgeComplaintResponse();
+        response.setMessage("complaint lodged successfully, awaiting confirmation");
+        return response;
     }
 
 
