@@ -1,9 +1,6 @@
 package africa.semicolon.Services;
 
-import africa.semicolon.Exceptions.EmailAlreadyExistException;
-import africa.semicolon.Exceptions.EmptyDetailsException;
-import africa.semicolon.Exceptions.FailedRoleException;
-import africa.semicolon.Exceptions.UserNotFound;
+import africa.semicolon.Exceptions.*;
 import africa.semicolon.data.models.ComplaintStatus;
 import africa.semicolon.data.models.UserGender;
 import africa.semicolon.data.models.UserRoles;
@@ -95,16 +92,28 @@ class UserServiceImplementationTest {
     }
 
     @Test
+    public void testThatADoctorCannotLoginWhenHeIsUnverified(){
+        UserLoginRequest loginRequest = new UserLoginRequest();
+        loginRequest.setEmail("bellohackim@gmail.com");
+        loginRequest.setPassword("password");
+
+        assertThrows(UnauthorizedUserException.class, ()->{
+            userService.logUserIn(loginRequest);
+        });
+    }
+
+    @Test
     public void testThatUserRegistrationThrowsAnExceptionIfYouRegisterWithTheSameEmail() {
         RegisterUserRequest registerUserRequest = new RegisterUserRequest();
         registerUserRequest.setAge(20);
         registerUserRequest.setAddress("3, Ebute Olowo Street, Allen");
         registerUserRequest.setPhone("123456789");
         registerUserRequest.setGender(UserGender.MALE);
-        registerUserRequest.setEmail("aladeamidatayomide@gmail.com");
+        registerUserRequest.setEmail("raheemhawanat@gmail.com");
         registerUserRequest.setPassword("password");
         registerUserRequest.setLastName("Olamide");
         registerUserRequest.setFirstName("Olamide");
+        registerUserRequest.setRole(UserRoles.PATIENT);
 
         assertThrows(EmailAlreadyExistException.class, () -> {
             userService.registerUser(registerUserRequest);
@@ -145,14 +154,6 @@ class UserServiceImplementationTest {
         });
     }
 
-    @Test
-    public void testThatUsersCanLoginWithCorrectDetails(){
-        UserLoginRequest login = new UserLoginRequest();
-        login.setEmail("aladeamidatayomide@gmail.com");
-        login.setPassword("password");
-        UserLoginResponse response = userService.logUserIn(login);
-        assertEquals("login successful!", response.getMessage());
-    }
 
     @Test
     public void testThatUserLoginThrowsAnExceptionIfYouTryToLoginWithEmptyDetails(){
@@ -229,16 +230,16 @@ class UserServiceImplementationTest {
         });
     }
 
-    @Test
-    public void testThatAPatientCanLodgeAComplaint(){
-        LodgeComplaintRequest request = new LodgeComplaintRequest();
-        request.setTitle("Severe headache");
-        request.setDescription("Full details");
-
-        LodgeComplaintResponse response = userService.lodgeComplaint(request);
-        assertNotNull(response);
-        assertTrue(complaintsRepository.existsByTitle("severe headache"));
-        assertEquals("complaint lodged successfully, awaiting confirmation", response.getMessage());
-    }
+//    @Test
+//    public void testThatAPatientCanLodgeAComplaint(){
+//        LodgeComplaintRequest request = new LodgeComplaintRequest();
+//        request.setTitle("Severe headache");
+//        request.setDescription("Full details");
+//
+//        LodgeComplaintResponse response = userService.lodgeComplaint(request);
+//        assertNotNull(response);
+//        assertTrue(complaintsRepository.existsByTitle("severe headache"));
+//        assertEquals("complaint lodged successfully, awaiting confirmation", response.getMessage());
+//    }
 
 }

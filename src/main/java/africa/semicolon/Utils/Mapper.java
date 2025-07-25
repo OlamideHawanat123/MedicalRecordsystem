@@ -78,10 +78,10 @@ public class Mapper {
         return admin;
     }
 
-    public static Complaint mapDetailsToComplaint(LodgeComplaintRequest request){
-        Complaint complaint = new Complaint();
-        complaint.setTitle(request.getTitle());
-        complaint.setDescription(request.getDescription());
-        complaint.setUserId();
-    }
+//    public static Complaint mapDetailsToComplaint(LodgeComplaintRequest request){
+//        Complaint complaint = new Complaint();
+//        complaint.setTitle(request.getTitle());
+//        complaint.setDescription(request.getDescription());
+//        complaint.setUserId();
+//    }
 }

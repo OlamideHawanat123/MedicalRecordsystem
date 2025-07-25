@@ -1,6 +1,7 @@
 package africa.semicolon.Services;
 
 import africa.semicolon.Exceptions.*;
+import africa.semicolon.JWT.JwtUtils;
 import africa.semicolon.Utils.Mapper;
 import africa.semicolon.data.models.*;
 import africa.semicolon.data.repositories.*;
@@ -38,6 +39,9 @@ public class UserServiceImplementation implements UserService {
     private ComplaintsRepository complaintsRepository;
 
     @Autowired
+    private JwtUtils jwtUtils;
+
+    @Autowired
     public UserServiceImplementation(UserRepository userRepository, PatientRepository patientRepository, PendingDoctorRepository pendingDoctorRepository) {
         this.pendingDoctorRepository = pendingDoctorRepository;
         this.userRepository = userRepository;
@@ -47,29 +51,40 @@ public class UserServiceImplementation implements UserService {
     @Override
     public RegisterUserResponse registerUser(RegisterUserRequest registerUserRequest) {
         validateRequest(registerUserRequest);
-        User user = Mapper.mapRequestToUser(registerUserRequest,passwordEncoder);
+        User user = Mapper.mapRequestToUser(registerUserRequest, passwordEncoder);
 
-        if(isPatient(registerUserRequest.getRole()))return registerPatient(user);
-        else if(isDoctor(registerUserRequest.getRole()))return  registerDoctor(user);
-        else if(isAdmin(registerUserRequest.getRole())) return registerAdmin(user);
-        else if(isSuperAdmin(registerUserRequest.getRole()))return registerSuperAdmin(user);
+        if (isPatient(registerUserRequest.getRole())) return registerPatient(user);
+        else if (isDoctor(registerUserRequest.getRole())) return registerDoctor(user);
+        else if (isAdmin(registerUserRequest.getRole())) return registerAdmin(user);
+        else if (isSuperAdmin(registerUserRequest.getRole())) return registerSuperAdmin(user);
         verificationService.sendVerification(user.getEmail());
 
         throw new InvalidRoleException("Invalid user role: " + registerUserRequest.getRole());
     }
 
+
     @Override
     public UserLoginResponse logUserIn(UserLoginRequest login) {
-        if(emptyEmailAndPassword(login.getEmail(), login.getPassword()))throw new EmptyDetailsException("Email or password cannot be empty");
-        if(!userRepository.existsByEmail(login.getEmail())) throw new UserNotFound("User doesn't exist");
 
-        User user = userRepository.findByEmail(login.getEmail().trim().toLowerCase()).orElseThrow();
-        if(!passwordEncoder.matches(login.getPassword(), user.getPassword())) throw new InvalidCredentialsException("Invalid details!");
+        if (emptyEmailAndPassword(login.getEmail(), login.getPassword())) {
+            throw new EmptyDetailsException("Email or password cannot be empty");
+        }
 
-        UserLoginResponse loginResponse = new UserLoginResponse();
-        loginResponse.setMessage("login successful!");
-        return loginResponse;
+        User user = userRepository.findByEmail(login.getEmail().trim().toLowerCase())
+                .orElseThrow(() -> new UserNotFound("User doesn't exist"));
+        if(!isVerified(user.isVerified()))throw new UnauthorizedUserException("awaiting admin's approval");
+
+        if (!passwordEncoder.matches(login.getPassword(), user.getPassword())) {
+            throw new InvalidCredentialsException("Invalid details!");
+        }
+
+        String token = jwtUtils.generateToken(user.getEmail());
+
+        return new UserLoginResponse("Login successful!", token);
     }
+
+
+
 
     @Override
     public LodgeComplaintResponse lodgeComplaint(LodgeComplaintRequest request) {
@@ -181,6 +196,10 @@ public class UserServiceImplementation implements UserService {
         registerUserResponse.setMessage("Registration successful, superAdmin!");
         registerUserResponse.setId(user.getId());
         return registerUserResponse;
+    }
+
+    private boolean isVerified(boolean isVerified){
+        return isVerified;
     }
 
 }
