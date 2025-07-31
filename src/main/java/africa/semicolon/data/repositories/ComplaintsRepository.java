@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ComplaintsRepository extends MongoRepository<Complaint, String> {
-    boolean existsByTitle(String title);
+    boolean existsByTitleIgnoreCase(String title);
 }

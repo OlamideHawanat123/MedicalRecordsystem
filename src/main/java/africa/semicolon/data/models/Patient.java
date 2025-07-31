@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
 
@@ -19,4 +20,9 @@ public class Patient extends User{
 
     @DBRef
     private List<MedicalRecords> medicalRecords;
+
+    @Field("patient_is_verified")
+    private boolean isVerified = true;
+
+
 }

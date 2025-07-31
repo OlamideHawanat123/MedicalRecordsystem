@@ -9,4 +9,5 @@ public class LodgeComplaintRequest {
     private String title;
     private String description;
     private LocalDateTime dateAndTime = LocalDateTime.now();
+
 }

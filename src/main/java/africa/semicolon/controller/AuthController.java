@@ -1,6 +1,7 @@
 package africa.semicolon.controller;
 
 
+import africa.semicolon.Exceptions.UnauthorizedUserException;
 import africa.semicolon.JWT.JwtUtils;
 import africa.semicolon.Services.CustomUserDetailsService;
 import africa.semicolon.dtos.requests.UserLoginRequest;
@@ -30,7 +31,7 @@ public class AuthController {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
             );
-        } catch (BadCredentialsException e) {
+        } catch (BadCredentialsException | UnauthorizedUserException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid credentials");
         }
 

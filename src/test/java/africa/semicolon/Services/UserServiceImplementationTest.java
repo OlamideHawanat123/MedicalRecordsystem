@@ -154,6 +154,28 @@ class UserServiceImplementationTest {
         });
     }
 
+    @Test
+    public void testThatUserLoginIsSuccessfulWithCorrectDetails(){
+        UserLoginRequest loginRequest = new UserLoginRequest();
+        loginRequest.setEmail("raheemhawanat@gmail.com");
+        loginRequest.setPassword("password");
+        UserLoginResponse userLoginResponse = userService.logUserIn(loginRequest);
+        assertNotNull(userLoginResponse);
+        assertNotNull(userLoginResponse.getToken());
+        assertEquals("Login successful!", userLoginResponse.getMessage());
+    }
+
+    @Test
+    public void testThatUserThatIsNotVerifiedCannotLogin(){
+        UserLoginRequest loginRequest = new UserLoginRequest();
+        loginRequest.setEmail("bellohackim@gmail.com");
+        loginRequest.setPassword("password");
+
+        assertThrows(UnauthorizedUserException.class, () -> {
+            userService.logUserIn(loginRequest);
+        });
+    }
+
 
     @Test
     public void testThatUserLoginThrowsAnExceptionIfYouTryToLoginWithEmptyDetails(){
@@ -166,8 +188,9 @@ class UserServiceImplementationTest {
         });
     }
 
+
     @Test
-    public void testThatUserRegistrationThrowsAnExceptionIfUserIsNotFound(){
+    public void testThatUserLoginThrowsAnExceptionIfUserIsNotFound(){
         UserLoginRequest login = new UserLoginRequest();
         login.setEmail("ola@gmail.com");
         login.setPassword("password");
@@ -230,16 +253,16 @@ class UserServiceImplementationTest {
         });
     }
 
-//    @Test
-//    public void testThatAPatientCanLodgeAComplaint(){
-//        LodgeComplaintRequest request = new LodgeComplaintRequest();
-//        request.setTitle("Severe headache");
-//        request.setDescription("Full details");
-//
-//        LodgeComplaintResponse response = userService.lodgeComplaint(request);
-//        assertNotNull(response);
-//        assertTrue(complaintsRepository.existsByTitle("severe headache"));
-//        assertEquals("complaint lodged successfully, awaiting confirmation", response.getMessage());
-//    }
+    @Test
+    public void testThatAPatientCanLodgeAComplaint(){
+        LodgeComplaintRequest request = new LodgeComplaintRequest();
+        request.setTitle("Severe headache");
+        request.setDescription("Full details");
+
+        LodgeComplaintResponse response = userService.lodgeComplaint(request);
+        assertNotNull(response);
+        assertTrue(complaintsRepository.existsByTitleIgnoreCase("severe headache"));
+        assertEquals("complaint lodged successfully, awaiting confirmation", response.getMessage());
+    }
 
 }

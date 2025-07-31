@@ -52,6 +52,8 @@ public class UserServiceImplementation implements UserService {
     public RegisterUserResponse registerUser(RegisterUserRequest registerUserRequest) {
         validateRequest(registerUserRequest);
         User user = Mapper.mapRequestToUser(registerUserRequest, passwordEncoder);
+        if(isPatient(user.getRole( ))) user.setVerified(true);
+
 
         if (isPatient(registerUserRequest.getRole())) return registerPatient(user);
         else if (isDoctor(registerUserRequest.getRole())) return registerDoctor(user);
@@ -65,14 +67,13 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public UserLoginResponse logUserIn(UserLoginRequest login) {
-
         if (emptyEmailAndPassword(login.getEmail(), login.getPassword())) {
             throw new EmptyDetailsException("Email or password cannot be empty");
         }
 
         User user = userRepository.findByEmail(login.getEmail().trim().toLowerCase())
                 .orElseThrow(() -> new UserNotFound("User doesn't exist"));
-        if(!isVerified(user.isVerified()))throw new UnauthorizedUserException("awaiting admin's approval");
+        if(!user.isVerified())throw new UnauthorizedUserException("awaiting admin's approval");
 
         if (!passwordEncoder.matches(login.getPassword(), user.getPassword())) {
             throw new InvalidCredentialsException("Invalid details!");
@@ -83,15 +84,10 @@ public class UserServiceImplementation implements UserService {
         return new UserLoginResponse("Login successful!", token);
     }
 
-
-
-
     @Override
     public LodgeComplaintResponse lodgeComplaint(LodgeComplaintRequest request) {
-        request.setTitle(request.getTitle());
-        request.setDescription(request.getDescription());
-        request.setDateAndTime( now());
-//        complaintsRepository.save(request)
+       Complaint complaint = Mapper.mapDetailsToComplaint(request);
+        complaintsRepository.save(complaint);
 
         LodgeComplaintResponse response = new LodgeComplaintResponse();
         response.setMessage("complaint lodged successfully, awaiting confirmation");
@@ -143,6 +139,7 @@ public class UserServiceImplementation implements UserService {
 
     private RegisterUserResponse registerPatient(User user) {
         Patient patient = Mapper.mapUserToPatient(user);
+        patient.setVerified(true);
         patientRepository.save(patient);
         userRepository.save(patient);
 

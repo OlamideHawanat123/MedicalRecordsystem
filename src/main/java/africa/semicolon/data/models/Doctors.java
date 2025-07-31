@@ -3,6 +3,7 @@ package africa.semicolon.data.models;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
@@ -10,5 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Doctors extends User{
     private String specialization;
     private String licenseId;
-    private boolean isLicenseVerified = false;
+    @Field("doctor is verified")
+    private boolean Verified = false;
+
 }

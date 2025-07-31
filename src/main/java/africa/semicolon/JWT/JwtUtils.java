@@ -10,14 +10,12 @@ import java.util.Date;
 @Component
 public class JwtUtils {
 
-    // IMPORTANT: key must be at least 256 bits (32 characters for HS256)
-    private final String jwtSecret = "your_super_secret_key_that_is_long_enough";
-
-    private final long jwtExpirationMs = 3600000; // 1 hour
+    private final String jwtSecret = "olamide is trying to build an application";
 
     private final SecretKey key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
 
     public String generateToken(String email) {
+        long jwtExpirationMs = 3600000;
         return Jwts.builder()
                 .setSubject(email)
                 .setIssuedAt(new Date())

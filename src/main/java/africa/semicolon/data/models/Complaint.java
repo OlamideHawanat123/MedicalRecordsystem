@@ -7,10 +7,11 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 @Data
 public class Complaint {
     @Id
-    private int id;
+    private String id;
     private String title;
     private String description;
     private String userId;
+    private ComplaintStatus complaintStatus;
 
     @DBRef
     private User user;
