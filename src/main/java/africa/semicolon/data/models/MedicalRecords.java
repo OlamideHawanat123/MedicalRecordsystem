@@ -23,5 +23,6 @@ public class MedicalRecords {
     private LocalDate visitDate;
     private String visitType;
     private LocalDate nextAppointmentDate;
+    private Complaint complaint;
 
 }

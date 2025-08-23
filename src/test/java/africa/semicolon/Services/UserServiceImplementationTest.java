@@ -5,6 +5,7 @@ import africa.semicolon.Exceptions.EmptyDetailsException;
 import africa.semicolon.Exceptions.FailedRoleException;
 import africa.semicolon.Exceptions.UserNotFound;
 import africa.semicolon.data.models.ComplaintStatus;
+import africa.semicolon.data.models.Doctors;
 import africa.semicolon.data.models.UserGender;
 import africa.semicolon.data.models.UserRoles;
 import africa.semicolon.data.repositories.*;
@@ -35,6 +36,9 @@ class UserServiceImplementationTest {
 
     @Autowired
     private SuperAdminRepo superAdminRepo;
+
+    @Autowired
+    private VerifiedDoctorsRepository verifiedDoctorsRepository;
 
     @Test
     public void testThatUserRegistrationRequestRegistersUser() {
@@ -228,14 +232,12 @@ class UserServiceImplementationTest {
     }
 
     @Test
-    public void testThatAPatientCanLodgeAComplaint(){
-        LodgeComplaintRequest request = new LodgeComplaintRequest();
-        request.setTitle("Severe headache");
-        request.setDescription("Full details");
+    public void testThatAdminCanVerifyDoctors(){
+        Doctors doctor = new Doctors();
+        doctor.setLicenseVerified(true);
+        pendingDoctorRepository.delete(doctor);
+        verifiedDoctorsRepository.save(doctor);
 
-        LodgeComplaintResponse response = userService.lodgeComplaint(request);
-        assertNotNull(response);
-        assertEquals("complaint lodged successfully, awaiting confirmation", response.getMessage());
     }
 
 }

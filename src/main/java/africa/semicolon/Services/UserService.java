@@ -12,5 +12,4 @@ public interface UserService {
 
     UserLoginResponse logUserIn(UserLoginRequest login);
 
-    LodgeComplaintResponse lodgeComplaint(LodgeComplaintRequest request);
 }

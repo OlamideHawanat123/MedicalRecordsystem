@@ -1,8 +1,11 @@
 package africa.semicolon.Utils;
 
 import africa.semicolon.data.models.*;
+import africa.semicolon.dtos.requests.LodgeComplaintRequest;
 import africa.semicolon.dtos.requests.RegisterUserRequest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.time.Instant;
 
 public class Mapper {
     public static User mapRequestToUser(RegisterUserRequest registerUserRequest, PasswordEncoder passwordEncoder) {
@@ -75,5 +78,16 @@ public class Mapper {
         admin.setPhoneNumber(user.getPhoneNumber());
         admin.setRole(user.getRole());
         return admin;
+    }
+
+    public static Complaint mapRequestToComplaint(LodgeComplaintRequest request){
+        Complaint complaint = new Complaint();
+        complaint.setTitle(request.getTitle());
+        complaint.setSeverity(request.getSeverity());
+        complaint.setDescription(request.getDescription());
+        complaint.setStatus(request.getStatus());
+        complaint.setCreatedAt(Instant.now());
+        complaint.setStartDate(request.getStartDate());
+        return complaint;
     }
 }

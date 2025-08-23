@@ -66,10 +66,6 @@ public class UserServiceImplementation implements UserService {
         return loginResponse;
     }
 
-    @Override
-    public LodgeComplaintResponse lodgeComplaint(LodgeComplaintRequest request) {
-        return null;
-    }
 
 
     public boolean confirm(String email, String code){
