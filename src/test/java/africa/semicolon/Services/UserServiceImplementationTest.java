@@ -99,7 +99,7 @@ class UserServiceImplementationTest {
         registerUserRequest.setAddress("3, Ebute Olowo Street, Allen");
         registerUserRequest.setPhone("123456789");
         registerUserRequest.setGender(UserGender.MALE);
-        registerUserRequest.setEmail("aladeamidatayomide@gmail.com");
+        registerUserRequest.setEmail("raheemhawanat@gmail.com");
         registerUserRequest.setPassword("password");
         registerUserRequest.setLastName("Olamide");
         registerUserRequest.setFirstName("Olamide");
@@ -146,7 +146,7 @@ class UserServiceImplementationTest {
     @Test
     public void testThatUsersCanLoginWithCorrectDetails(){
         UserLoginRequest login = new UserLoginRequest();
-        login.setEmail("aladeamidatayomide@gmail.com");
+        login.setEmail("raheemhawanat@gmail.com");
         login.setPassword("password");
         UserLoginResponse response = userService.logUserIn(login);
         assertEquals("login successful!", response.getMessage());
