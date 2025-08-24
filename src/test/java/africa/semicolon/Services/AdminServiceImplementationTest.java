@@ -18,7 +18,7 @@ public class AdminServiceImplementationTest {
     public void testThatAdminCanVerifyDoctors() {
         VerifyDoctorRequest request = new VerifyDoctorRequest();
         request.setLicenseId("012345");
-        request.setEmail("bellohackim@gmail.com");
+        request.setEmail("belloharyourmidey@gmail.com");
 
         VerifyDoctorResponse response = adminService.verifyDoctor(request);
         assertEquals("Check your email for message", response.getMessage());

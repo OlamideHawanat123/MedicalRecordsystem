@@ -52,6 +52,18 @@ public class EmailService {
         mailSender.send(message);
     }
 
+    public void sendDeletionEmailToAdmin(String email){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("Deletion of Account");
+        message.setText(
+                "Your account has been removed" + "\n\n" +
+                "You no longer have access to the platform\n\n" +
+                "Best regards, \n"  +
+                "The Medical Records Team");
+        mailSender.send(message);
+    }
+
     public String generateVerificationCode(){
         return String.valueOf(100000 + new Random().nextInt(900000));
     }

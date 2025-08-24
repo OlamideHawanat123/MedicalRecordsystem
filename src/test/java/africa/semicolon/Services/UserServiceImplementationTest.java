@@ -65,7 +65,7 @@ class UserServiceImplementationTest {
         registerUserRequest.setAddress("3, Ebute Olowo Street, Okepop o");
         registerUserRequest.setPhone("123456789");
         registerUserRequest.setGender(UserGender.FEMALE);
-        registerUserRequest.setEmail("bellohackim@gmail.com");
+        registerUserRequest.setEmail("belloharyourmidey@gmail.com");
         registerUserRequest.setPassword("password");
         registerUserRequest.setLastName("Hakeem");
         registerUserRequest.setFirstName("Bello");
@@ -231,6 +231,27 @@ class UserServiceImplementationTest {
         assertThrows(FailedRoleException.class, () ->{
             userService.registerUser(registerUserRequest);
         });
+    }
+
+    @Test
+    public void testThatUserThatRegistersAnotherDoctorGetsTheirRequestSavedInAPendingRepositoryBeforeApproval(){
+        RegisterUserRequest registerUserRequest = new RegisterUserRequest();
+        registerUserRequest.setAge(40);
+        registerUserRequest.setAddress("3, Ebute Olowo Street, Okepop o");
+        registerUserRequest.setPhone("123456789");
+        registerUserRequest.setGender(UserGender.FEMALE);
+        registerUserRequest.setEmail("rashid@gmail.com");
+        registerUserRequest.setPassword("password");
+        registerUserRequest.setLastName("Olamide");
+        registerUserRequest.setFirstName("Bello");
+        registerUserRequest.setRole(UserRoles.ADMIN);
+        registerUserRequest.setLicenseId("012335");
+        registerUserRequest.setSpecialization("paedetrician");
+
+        RegisterUserResponse response = userService.registerUser(registerUserRequest);
+        assertNotNull(response);
+        assertEquals("Registration successful, waiting for approval", response.getMessage());
+
     }
 
 
