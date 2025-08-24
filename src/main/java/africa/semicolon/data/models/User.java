@@ -22,6 +22,10 @@ public class User {
     private UserGender gender;
     private UserRoles role;
     private boolean isVerified;
+    private boolean isLicensedVerified;
+    private String specialization;
+    private String licenseId;
+
 
 
 }

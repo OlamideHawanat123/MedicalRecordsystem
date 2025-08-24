@@ -4,6 +4,7 @@ import africa.semicolon.Exceptions.*;
 import africa.semicolon.Utils.Mapper;
 import africa.semicolon.data.models.*;
 import africa.semicolon.data.repositories.*;
+import africa.semicolon.dtos.requests.ConfirmRegistrationCodeRequest;
 import africa.semicolon.dtos.requests.LodgeComplaintRequest;
 import africa.semicolon.dtos.requests.RegisterUserRequest;
 import africa.semicolon.dtos.requests.UserLoginRequest;
@@ -50,6 +51,10 @@ public class UserServiceImplementation implements UserService {
         else if(isSuperAdmin(registerUserRequest.getRole()))return registerSuperAdmin(user);
         verificationService.sendVerification(user.getEmail());
 
+        ConfirmRegistrationCodeRequest confirmRegistrationCodeRequest = new ConfirmRegistrationCodeRequest();
+        confirm(confirmRegistrationCodeRequest.getEmail(), confirmRegistrationCodeRequest.getCode());
+
+
         throw new InvalidRoleException("Invalid user role: " + registerUserRequest.getRole());
     }
 
@@ -68,7 +73,7 @@ public class UserServiceImplementation implements UserService {
 
 
 
-    public boolean confirm(String email, String code){
+    public void confirm(String email, String code){
         boolean valid = verificationService.verifyConfirmationCode(email, code);
         if(!valid) throw new FailedVerificationException("Verification code does not match!");
 
@@ -78,7 +83,6 @@ public class UserServiceImplementation implements UserService {
             user.setVerified(true);
             userRepository.save(user);
         }
-        return true;
     }
 
 

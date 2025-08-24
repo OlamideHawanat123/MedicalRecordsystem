@@ -6,9 +6,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Document(collection ="Doctors")
+@Document(collection = "Doctors")
 public class Doctors extends User{
-    private String specialization;
-    private String licenseId;
-    private boolean isLicenseVerified = false;
+
+
 }

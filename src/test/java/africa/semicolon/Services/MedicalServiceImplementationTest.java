@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
-public class MedicalServicesTest {
+public class MedicalServiceImplementationTest {
 
     @Autowired
     private MedicalService medicalService;

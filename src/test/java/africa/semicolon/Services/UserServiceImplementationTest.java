@@ -12,9 +12,11 @@ import africa.semicolon.data.repositories.*;
 import africa.semicolon.dtos.requests.LodgeComplaintRequest;
 import africa.semicolon.dtos.requests.RegisterUserRequest;
 import africa.semicolon.dtos.requests.UserLoginRequest;
+import africa.semicolon.dtos.requests.VerifyDoctorRequest;
 import africa.semicolon.dtos.responses.LodgeComplaintResponse;
 import africa.semicolon.dtos.responses.RegisterUserResponse;
 import africa.semicolon.dtos.responses.UserLoginResponse;
+import africa.semicolon.dtos.responses.VerifyDoctorResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -37,8 +39,6 @@ class UserServiceImplementationTest {
     @Autowired
     private SuperAdminRepo superAdminRepo;
 
-    @Autowired
-    private VerifiedDoctorsRepository verifiedDoctorsRepository;
 
     @Test
     public void testThatUserRegistrationRequestRegistersUser() {
@@ -61,15 +61,17 @@ class UserServiceImplementationTest {
     @Test
     public void testThatUserThatRegistersAsDoctorGetsTheirRequestSavedInAPendingRepositoryBeforeApproval(){
         RegisterUserRequest registerUserRequest = new RegisterUserRequest();
-        registerUserRequest.setAge(20);
+        registerUserRequest.setAge(40);
         registerUserRequest.setAddress("3, Ebute Olowo Street, Okepop o");
         registerUserRequest.setPhone("123456789");
         registerUserRequest.setGender(UserGender.FEMALE);
         registerUserRequest.setEmail("bellohackim@gmail.com");
         registerUserRequest.setPassword("password");
-        registerUserRequest.setLastName("Olamide");
-        registerUserRequest.setFirstName("Olamide");
+        registerUserRequest.setLastName("Hakeem");
+        registerUserRequest.setFirstName("Bello");
         registerUserRequest.setRole(UserRoles.DOCTOR);
+        registerUserRequest.setLicenseId("012345");
+        registerUserRequest.setSpecialization("paedetrician");
 
         RegisterUserResponse response = userService.registerUser(registerUserRequest);
         assertNotNull(response);
@@ -231,13 +233,6 @@ class UserServiceImplementationTest {
         });
     }
 
-    @Test
-    public void testThatAdminCanVerifyDoctors(){
-        Doctors doctor = new Doctors();
-        doctor.setLicenseVerified(true);
-        pendingDoctorRepository.delete(doctor);
-        verifiedDoctorsRepository.save(doctor);
 
-    }
 
 }

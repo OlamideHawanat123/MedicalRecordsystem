@@ -17,5 +17,6 @@ public class RegisterUserRequest {
     private UserRoles role;
     private String specialization;
     private String licenseId;
+    private String phoneNumber;
 
 }

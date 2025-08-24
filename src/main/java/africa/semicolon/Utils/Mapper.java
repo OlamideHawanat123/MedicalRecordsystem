@@ -19,6 +19,8 @@ public class Mapper {
         user.setGender(registerUserRequest.getGender());
         user.setAge(registerUserRequest.getAge());
         user.setRole(registerUserRequest.getRole());
+        user.setLicenseId(registerUserRequest.getLicenseId());
+        user.setSpecialization(registerUserRequest.getSpecialization());
         return user;
     }
 
@@ -47,8 +49,9 @@ public class Mapper {
         doctors.setAge(user.getAge());
         doctors.setPhoneNumber(user.getPhoneNumber());
         doctors.setRole(user.getRole());
-        doctors.setLicenseId(doctors.getLicenseId());
-        doctors.setSpecialization(doctors.getSpecialization());
+        doctors.setLicenseId(user.getLicenseId());
+        doctors.setSpecialization(user.getSpecialization());
+        doctors.setLicenseId(user.getLicenseId());
         return doctors;
     }
 
