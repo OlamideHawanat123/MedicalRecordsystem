@@ -18,5 +18,4 @@ public class RegisterUserRequest {
     private String specialization;
     private String licenseId;
     private String phoneNumber;
-
 }

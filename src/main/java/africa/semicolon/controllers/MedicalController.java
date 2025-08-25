@@ -1,7 +1,7 @@
 package africa.semicolon.controllers;
 
 import africa.semicolon.data.models.Doctors;
-import africa.semicolon.data.repositories.PendingDoctorRepository;
+import africa.semicolon.data.repositories.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +15,23 @@ import java.util.List;
 @RequestMapping("/medical")
 public class MedicalController {
     @Autowired
-    private PendingDoctorRepository pendingDoctorRepository;
+    private DoctorRepository doctorRepository;
 
     @GetMapping("/pendingDoctors")
-    public ResponseEntity<?> getPendingDoctors (){
+    public ResponseEntity<?> getUnverifiedDoctors (){
         try {
-            List<Doctors> pendingDoctors = pendingDoctorRepository.findAll();
-            return ResponseEntity.status(HttpStatus.FOUND).body(pendingDoctors);
+            List<Doctors> pendingDoctors = doctorRepository.findDoctorsByIsLicensedVerifiedFalse();
+            return ResponseEntity.status(HttpStatus.OK).body(pendingDoctors);
+        }catch(Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/availableDoctors")
+    public ResponseEntity<?> getAvailableDoctors(){
+        try{
+            List<Doctors> availableDoctors = doctorRepository.findDoctorsByIsAvailableTrue();
+            return ResponseEntity.status(HttpStatus.OK).body(availableDoctors);
         }catch(Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }

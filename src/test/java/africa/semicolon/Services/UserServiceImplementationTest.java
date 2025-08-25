@@ -4,19 +4,13 @@ import africa.semicolon.Exceptions.EmailAlreadyExistException;
 import africa.semicolon.Exceptions.EmptyDetailsException;
 import africa.semicolon.Exceptions.FailedRoleException;
 import africa.semicolon.Exceptions.UserNotFound;
-import africa.semicolon.data.models.ComplaintStatus;
-import africa.semicolon.data.models.Doctors;
 import africa.semicolon.data.models.UserGender;
 import africa.semicolon.data.models.UserRoles;
 import africa.semicolon.data.repositories.*;
-import africa.semicolon.dtos.requests.LodgeComplaintRequest;
 import africa.semicolon.dtos.requests.RegisterUserRequest;
 import africa.semicolon.dtos.requests.UserLoginRequest;
-import africa.semicolon.dtos.requests.VerifyDoctorRequest;
-import africa.semicolon.dtos.responses.LodgeComplaintResponse;
 import africa.semicolon.dtos.responses.RegisterUserResponse;
 import africa.semicolon.dtos.responses.UserLoginResponse;
-import africa.semicolon.dtos.responses.VerifyDoctorResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -34,7 +28,7 @@ class UserServiceImplementationTest {
     @Autowired
     private PatientRepository  patientRepository;
     @Autowired
-    private PendingDoctorRepository pendingDoctorRepository;
+    private DoctorRepository doctorRepository;
 
     @Autowired
     private SuperAdminRepo superAdminRepo;
@@ -76,7 +70,7 @@ class UserServiceImplementationTest {
         RegisterUserResponse response = userService.registerUser(registerUserRequest);
         assertNotNull(response);
         assertEquals("Pending Registration, awaiting admin's approval", response.getMessage());
-        assertTrue(pendingDoctorRepository.existsByEmail(registerUserRequest.getEmail()));
+        assertTrue(doctorRepository.existsByEmail(registerUserRequest.getEmail()));
 
     }
 

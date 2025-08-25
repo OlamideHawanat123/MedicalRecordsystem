@@ -1,5 +1,8 @@
 package africa.semicolon.Services;
 
+import africa.semicolon.data.repositories.DoctorRepository;
+import africa.semicolon.dtos.requests.RemoveDoctorRequest;
+import africa.semicolon.dtos.requests.RemoveDoctorResponse;
 import africa.semicolon.dtos.requests.VerifyDoctorRequest;
 import africa.semicolon.dtos.responses.VerifyDoctorResponse;
 import org.junit.jupiter.api.Test;
@@ -12,6 +15,8 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AdminServiceImplementationTest {
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private DoctorRepository doctorRepository;
 
 
     @Test
@@ -23,4 +28,19 @@ public class AdminServiceImplementationTest {
         VerifyDoctorResponse response = adminService.verifyDoctor(request);
         assertEquals("Check your email for message", response.getMessage());
     }
+
+    @Test
+    public void testThatAdminCanRemoveDoctor(){
+        assertTrue(doctorRepository.existsByEmail("belloharyourmidey@gmail.com"));
+        RemoveDoctorRequest request = new RemoveDoctorRequest();
+        request.setEmail("belloharyourmidey@gmail.com");
+
+        RemoveDoctorResponse response = adminService.removeDoctor(request);
+        assertEquals("Account removed successfully", response.getMessage());
+        assertFalse(doctorRepository.existsByEmail("belloharyourmidey@gmail.com"));
+
+    }
+
+//    @Test
+//    public void testThatUserCan
 }

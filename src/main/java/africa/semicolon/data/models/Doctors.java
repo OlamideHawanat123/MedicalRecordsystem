@@ -8,6 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Document(collection = "Doctors")
 public class Doctors extends User{
+    private boolean isAvailable = true;
 
 
 }

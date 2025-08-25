@@ -5,10 +5,8 @@ import africa.semicolon.Utils.Mapper;
 import africa.semicolon.data.models.*;
 import africa.semicolon.data.repositories.*;
 import africa.semicolon.dtos.requests.ConfirmRegistrationCodeRequest;
-import africa.semicolon.dtos.requests.LodgeComplaintRequest;
 import africa.semicolon.dtos.requests.RegisterUserRequest;
 import africa.semicolon.dtos.requests.UserLoginRequest;
-import africa.semicolon.dtos.responses.LodgeComplaintResponse;
 import africa.semicolon.dtos.responses.RegisterUserResponse;
 import africa.semicolon.dtos.responses.UserLoginResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +24,7 @@ public class UserServiceImplementation implements UserService {
 
     private final UserRepository userRepository;
     private PatientRepository patientRepository;
-    private PendingDoctorRepository pendingDoctorRepository;
+    private DoctorRepository doctorRepository;
     @Autowired
     private AdminRepository adminRepository;
 
@@ -34,8 +32,8 @@ public class UserServiceImplementation implements UserService {
     private SuperAdminRepo superAdminRepo;
 
     @Autowired
-    public UserServiceImplementation(UserRepository userRepository, PatientRepository patientRepository, PendingDoctorRepository pendingDoctorRepository) {
-        this.pendingDoctorRepository = pendingDoctorRepository;
+    public UserServiceImplementation(UserRepository userRepository, PatientRepository patientRepository, DoctorRepository doctorRepository) {
+        this.doctorRepository = doctorRepository;
         this.userRepository = userRepository;
         this.patientRepository = patientRepository;
     }
@@ -141,7 +139,7 @@ public class UserServiceImplementation implements UserService {
 
     private void notifyAdminOfRequest(User user) {
         Doctors doctor = Mapper.mapUserToDoctors(user);
-        pendingDoctorRepository.save(doctor);
+        doctorRepository.save(doctor);
     }
 
     private RegisterUserResponse registerAdmin(User user){
