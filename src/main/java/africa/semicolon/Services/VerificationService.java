@@ -1,7 +1,9 @@
 package africa.semicolon.Services;
 
 import africa.semicolon.Exceptions.FailedVerificationException;
+import africa.semicolon.Exceptions.UserNotFound;
 import africa.semicolon.data.models.VerificationCode;
+import africa.semicolon.data.repositories.UserRepository;
 import africa.semicolon.data.repositories.VerificationCodeRepository;
 import africa.semicolon.dtos.responses.VerifyAccountResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,12 @@ public class VerificationService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public VerifyAccountResponse sendVerification(String email){
+
+        if(!userRepository.existsByEmail(email)) throw new UserNotFound("Account not found");
         String code =emailService.generateVerificationCode();
         VerificationCode verificationCode = new VerificationCode(email, code);
         verificationCodeRepository.save(verificationCode);
