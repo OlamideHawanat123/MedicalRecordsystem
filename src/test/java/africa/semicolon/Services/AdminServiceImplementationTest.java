@@ -2,7 +2,7 @@ package africa.semicolon.Services;
 
 import africa.semicolon.data.repositories.DoctorRepository;
 import africa.semicolon.dtos.requests.RemoveDoctorRequest;
-import africa.semicolon.dtos.requests.RemoveDoctorResponse;
+import africa.semicolon.dtos.responses.RemoveDoctorResponse;
 import africa.semicolon.dtos.requests.VerifyDoctorRequest;
 import africa.semicolon.dtos.responses.VerifyDoctorResponse;
 import org.junit.jupiter.api.Test;
@@ -42,5 +42,9 @@ public class AdminServiceImplementationTest {
     }
 
 //    @Test
-//    public void testThatUserCan
+//    public void testThatAdminCanSelectADoctor(){
+//        SelectDoctorRequest request = new SelectDoctorRequest(){
+//            request.set
+//        }
+//    }
 }

@@ -24,5 +24,4 @@ public class MedicalRecords {
     private String visitType;
     private LocalDate nextAppointmentDate;
     private Complaint complaint;
-
 }

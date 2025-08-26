@@ -3,6 +3,7 @@ package africa.semicolon.Services;
 import africa.semicolon.Exceptions.FailedVerificationException;
 import africa.semicolon.data.models.VerificationCode;
 import africa.semicolon.data.repositories.VerificationCodeRepository;
+import africa.semicolon.dtos.responses.VerifyAccountResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,16 @@ public class VerificationService {
     @Autowired
     private EmailService emailService;
 
-    public void sendVerification(String email){
+    public VerifyAccountResponse sendVerification(String email){
         String code =emailService.generateVerificationCode();
         VerificationCode verificationCode = new VerificationCode(email, code);
         verificationCodeRepository.save(verificationCode);
         emailService.sendVerificationEmail(email, code);
+
+        VerifyAccountResponse response = new VerifyAccountResponse();
+        response.setMessage("Check your mail for verification code");
+        response.setEmail(email);
+        return response;
     }
 
     public boolean verifyConfirmationCode(String email, String code){

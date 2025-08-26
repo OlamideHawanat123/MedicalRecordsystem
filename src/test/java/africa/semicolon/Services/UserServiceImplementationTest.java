@@ -7,10 +7,13 @@ import africa.semicolon.Exceptions.UserNotFound;
 import africa.semicolon.data.models.UserGender;
 import africa.semicolon.data.models.UserRoles;
 import africa.semicolon.data.repositories.*;
+import africa.semicolon.dtos.requests.ConfirmRegistrationCodeRequest;
 import africa.semicolon.dtos.requests.RegisterUserRequest;
 import africa.semicolon.dtos.requests.UserLoginRequest;
+import africa.semicolon.dtos.requests.VerifyAccountRequest;
 import africa.semicolon.dtos.responses.RegisterUserResponse;
 import africa.semicolon.dtos.responses.UserLoginResponse;
+import africa.semicolon.dtos.responses.VerifyAccountResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,6 +35,9 @@ class UserServiceImplementationTest {
 
     @Autowired
     private SuperAdminRepo superAdminRepo;
+
+    @Autowired
+    private VerificationService verificationService;
 
 
     @Test
@@ -245,9 +251,25 @@ class UserServiceImplementationTest {
         RegisterUserResponse response = userService.registerUser(registerUserRequest);
         assertNotNull(response);
         assertEquals("Registration successful, waiting for approval", response.getMessage());
-
     }
 
+    @Test
+    public void testThatUserCanVerifyTheirAccount(){
+        ConfirmRegistrationCodeRequest request = new ConfirmRegistrationCodeRequest();
+        request.setCode("");
+        request.setEmail("");
 
+        ConfirmRegistrationCodeResponse response = userService.confirmVerification(request.getCode(), request.getEmail());
+        assertEquals("Account verification successful", response.getMessage())
+    }
+
+    @Test
+    public void testThatUserCanGetVerifiedUponRequest(){
+        VerifyAccountRequest request = new VerifyAccountRequest();
+        request.setEmail("raheemhawanat@gmail.com");
+
+        VerifyAccountResponse response = verificationService.sendVerification(request.getEmail());
+        assertEquals("Check your mail for verification code", response.getMessage());
+    }
 
 }

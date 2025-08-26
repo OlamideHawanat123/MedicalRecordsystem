@@ -23,8 +23,8 @@ public class UserServiceImplementation implements UserService {
     private VerificationService verificationService;
 
     private final UserRepository userRepository;
-    private PatientRepository patientRepository;
-    private DoctorRepository doctorRepository;
+    private final PatientRepository patientRepository;
+    private final DoctorRepository doctorRepository;
     @Autowired
     private AdminRepository adminRepository;
 

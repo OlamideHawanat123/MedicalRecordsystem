@@ -5,7 +5,7 @@ import africa.semicolon.data.models.Doctors;
 import africa.semicolon.data.repositories.DoctorRepository;
 import africa.semicolon.data.repositories.UserRepository;
 import africa.semicolon.dtos.requests.RemoveDoctorRequest;
-import africa.semicolon.dtos.requests.RemoveDoctorResponse;
+import africa.semicolon.dtos.responses.RemoveDoctorResponse;
 import africa.semicolon.dtos.requests.VerifyDoctorRequest;
 import africa.semicolon.dtos.responses.VerifyDoctorResponse;
 import org.springframework.beans.factory.annotation.Autowired;

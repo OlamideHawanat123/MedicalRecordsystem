@@ -3,7 +3,6 @@ package africa.semicolon.data.models;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-
 import java.time.Instant;
 
 @Getter
@@ -17,6 +16,4 @@ public class Complaint {
     private Severity severity;
     private ComplaintStatus status;
     private Instant createdAt;
-
-
 }

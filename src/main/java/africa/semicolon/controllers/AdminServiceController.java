@@ -3,7 +3,7 @@ package africa.semicolon.controllers;
 import africa.semicolon.Exceptions.UserNotFound;
 import africa.semicolon.Services.AdminService;
 import africa.semicolon.dtos.requests.RemoveDoctorRequest;
-import africa.semicolon.dtos.requests.RemoveDoctorResponse;
+import africa.semicolon.dtos.responses.RemoveDoctorResponse;
 import africa.semicolon.dtos.requests.VerifyDoctorRequest;
 import africa.semicolon.dtos.responses.VerifyDoctorResponse;
 import org.springframework.beans.factory.annotation.Autowired;

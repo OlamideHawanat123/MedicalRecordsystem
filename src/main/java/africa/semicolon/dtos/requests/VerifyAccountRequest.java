@@ -3,6 +3,6 @@ package africa.semicolon.dtos.requests;
 import lombok.Data;
 
 @Data
-public class RemoveDoctorResponse {
-    private String message;
+public class VerifyAccountRequest {
+    private String email;
 }
