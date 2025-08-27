@@ -5,6 +5,7 @@ import africa.semicolon.Utils.Mapper;
 import africa.semicolon.data.models.*;
 import africa.semicolon.data.repositories.*;
 import africa.semicolon.dtos.requests.ConfirmRegistrationCodeRequest;
+import africa.semicolon.dtos.requests.ConfirmRegistrationCodeResponse;
 import africa.semicolon.dtos.requests.RegisterUserRequest;
 import africa.semicolon.dtos.requests.UserLoginRequest;
 import africa.semicolon.dtos.responses.RegisterUserResponse;
@@ -16,20 +17,24 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImplementation implements UserService {
+
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private VerificationService verificationService;
-
     private final UserRepository userRepository;
     private final PatientRepository patientRepository;
     private final DoctorRepository doctorRepository;
+
     @Autowired
     private AdminRepository adminRepository;
 
     @Autowired
     private SuperAdminRepo superAdminRepo;
+
+    @Autowired
+    private VerificationCodeRepository verificationCodeRepository;
 
     @Autowired
     public UserServiceImplementation(UserRepository userRepository, PatientRepository patientRepository, DoctorRepository doctorRepository) {
@@ -52,7 +57,6 @@ public class UserServiceImplementation implements UserService {
         ConfirmRegistrationCodeRequest confirmRegistrationCodeRequest = new ConfirmRegistrationCodeRequest();
         confirm(confirmRegistrationCodeRequest.getEmail(), confirmRegistrationCodeRequest.getCode());
 
-
         throw new InvalidRoleException("Invalid user role: " + registerUserRequest.getRole());
     }
 
@@ -68,6 +72,21 @@ public class UserServiceImplementation implements UserService {
         loginResponse.setMessage("login successful!");
         return loginResponse;
     }
+
+    @Override
+    public ConfirmRegistrationCodeResponse confirmVerification(ConfirmRegistrationCodeRequest request) {
+        Optional<VerificationCode> verificationCode = verificationCodeRepository.findByEmail(request.getEmail());
+        if (verificationCode.isPresent()) {
+            if(verificationCode.get().getCode().equals(request.getCode()){
+                Optional<User> user = userRepository.findByEmail(request.getEmail());
+                user.get().setVerified(true);
+                User userOpt = user.get();
+                userRepository.save(userOpt);
+            }
+        }
+
+    }
+
 
 
 
