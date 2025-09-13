@@ -75,16 +75,18 @@ public class UserServiceImplementation implements UserService {
 
     @Override
     public ConfirmRegistrationCodeResponse confirmVerification(ConfirmRegistrationCodeRequest request) {
-        Optional<VerificationCode> verificationCode = verificationCodeRepository.findByEmail(request.getEmail());
-        if (verificationCode.isPresent()) {
-            if(verificationCode.get().getCode().equals(request.getCode()){
-                Optional<User> user = userRepository.findByEmail(request.getEmail());
-                user.get().setVerified(true);
-                User userOpt = user.get();
-                userRepository.save(userOpt);
-            }
-        }
+//        Optional<VerificationCode> verificationCode = verificationCodeRepository.findByEmail(request.getEmail());
+//        if (verificationCode.isPresent()) {
+//            if(verificationCode.get().getCode().equals(request.getCode()){
+//                Optional<User> user = userRepository.findByEmail(request.getEmail());
+//                user.get().setVerified(true);
+//                User userOpt = user.get();
+//                userRepository.save(userOpt);
+//            }
+//
+//        }
 
+        return null;
     }
 
 
@@ -189,3 +191,4 @@ public class UserServiceImplementation implements UserService {
     }
 
 }
+
