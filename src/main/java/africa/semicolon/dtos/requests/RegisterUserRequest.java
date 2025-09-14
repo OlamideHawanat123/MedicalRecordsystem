@@ -12,7 +12,6 @@ public class RegisterUserRequest {
     private String email;
     private String password;
     private String address;
-    private String phone;
     private UserGender gender;
     private UserRoles role;
     private String specialization;

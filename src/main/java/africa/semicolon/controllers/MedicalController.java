@@ -17,23 +17,6 @@ public class MedicalController {
     @Autowired
     private DoctorRepository doctorRepository;
 
-    @GetMapping("/pendingDoctors")
-    public ResponseEntity<?> getUnverifiedDoctors (){
-        try {
-            List<Doctors> pendingDoctors = doctorRepository.findDoctorsByIsLicensedVerifiedFalse();
-            return ResponseEntity.status(HttpStatus.OK).body(pendingDoctors);
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }
 
-    @GetMapping("/availableDoctors")
-    public ResponseEntity<?> getAvailableDoctors(){
-        try{
-            List<Doctors> availableDoctors = doctorRepository.findDoctorsByIsAvailableTrue();
-            return ResponseEntity.status(HttpStatus.OK).body(availableDoctors);
-        }catch(Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }
-    }
+
 }

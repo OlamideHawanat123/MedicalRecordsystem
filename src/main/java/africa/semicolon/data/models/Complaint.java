@@ -16,4 +16,5 @@ public class Complaint {
     private Severity severity;
     private ComplaintStatus status;
     private Instant createdAt;
+    private String doctorId;
 }

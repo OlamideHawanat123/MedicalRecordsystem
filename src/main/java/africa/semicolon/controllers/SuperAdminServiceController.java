@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/superAdmin/")
+@RequestMapping("/api/superAdmin/")
 public class SuperAdminServiceController {
     @Autowired
     private SuperAdminService superAdminService;
 
-    @DeleteMapping
+    @DeleteMapping("deleteAdmin")
     public ResponseEntity<?> deleteAdmin(@RequestBody RemoveAdminRequest removeAdminRequest){
         try {
             RemoveAdminResponse response = superAdminService.removeAdmin(removeAdminRequest);

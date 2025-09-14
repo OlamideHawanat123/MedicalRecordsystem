@@ -2,6 +2,6 @@ package africa.semicolon.data.models;
 
 public enum ComplaintStatus {
     PENDING,
-    APPROVED,
+    ASSIGNED,
     REJECTED,
 }

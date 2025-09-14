@@ -31,6 +31,7 @@ public class AdminServiceImplementation implements AdminService{
                         .orElseThrow(() -> new UserNotFound("You need to register first")));
 
         doctor.get().setLicensedVerified(true);
+        doctor.get().setVerified(true);
         doctorRepository.save(doctor.get());
 
         VerifyDoctorResponse response = new VerifyDoctorResponse();

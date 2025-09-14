@@ -88,7 +88,7 @@ public class Mapper {
         complaint.setTitle(request.getTitle());
         complaint.setSeverity(request.getSeverity());
         complaint.setDescription(request.getDescription());
-        complaint.setStatus(request.getStatus());
+        complaint.setStatus(ComplaintStatus.PENDING);
         complaint.setCreatedAt(Instant.now());
         complaint.setStartDate(request.getStartDate());
         return complaint;

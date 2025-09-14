@@ -13,6 +13,5 @@ public class LodgeComplaintRequest {
     private String description;
     private Instant startDate;
     private Severity severity;
-    private ComplaintStatus status;
     private Instant createdAt;
 }
