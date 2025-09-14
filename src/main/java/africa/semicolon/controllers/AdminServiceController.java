@@ -2,6 +2,7 @@ package africa.semicolon.controllers;
 
 import africa.semicolon.Exceptions.UserNotFound;
 import africa.semicolon.Services.AdminService;
+import africa.semicolon.data.models.Complaint;
 import africa.semicolon.data.models.Doctors;
 import africa.semicolon.data.repositories.DoctorRepository;
 import africa.semicolon.dtos.requests.RemoveDoctorRequest;
@@ -63,4 +64,13 @@ public class AdminServiceController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }
+
+        @PutMapping("/complaints/{complaintId}/assign/{doctorId}")
+        public ResponseEntity<Complaint> assignDoctor(
+                @PathVariable String complaintId,
+                @PathVariable String doctorId) {
+
+            Complaint updatedComplaint = adminService.assignDoctor(complaintId, doctorId);
+            return ResponseEntity.ok(updatedComplaint);
+        }
 }

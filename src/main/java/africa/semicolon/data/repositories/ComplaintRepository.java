@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ComplaintRepository extends MongoRepository<Complaint, String> {
-    Optional<Complaint> findComplaintByTitle(String title);
+    Optional<Complaint> findComplaintByTitleIgnoreCase(String title);
+    Optional<Complaint> findById(String id);
     List<Complaint> findAll();
 }

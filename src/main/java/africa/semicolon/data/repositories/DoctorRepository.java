@@ -14,6 +14,8 @@ public interface DoctorRepository extends MongoRepository<Doctors, String> {
 
     Optional<Doctors> findDoctorsByLicenseId(String licenseId);
 
+    Optional<Doctors> findById(String id);
+
     Optional<Doctors> findDoctorsByEmail(String email);
 
     @Query("{'isLicensedVerified' : false}")

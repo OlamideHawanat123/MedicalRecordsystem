@@ -44,12 +44,13 @@ class UserServiceImplementationTest {
         RegisterUserRequest registerUserRequest = new RegisterUserRequest();
         registerUserRequest.setAge(20);
         registerUserRequest.setAddress("3, Ebute Olowo Street, Okepop o");
-        registerUserRequest.setPhone("123456789");
         registerUserRequest.setGender(UserGender.MALE);
         registerUserRequest.setEmail("raheemhawanat@gmail.com");
         registerUserRequest.setPassword("password");
         registerUserRequest.setLastName("Olamide");
         registerUserRequest.setFirstName("Olamide");
+        registerUserRequest.setPhoneNumber("123456789");
+
         registerUserRequest.setRole(UserRoles.PATIENT);
         RegisterUserResponse response = userService.registerUser(registerUserRequest);
         assertNotNull(response);
@@ -62,13 +63,14 @@ class UserServiceImplementationTest {
         RegisterUserRequest registerUserRequest = new RegisterUserRequest();
         registerUserRequest.setAge(40);
         registerUserRequest.setAddress("3, Ebute Olowo Street, Okepop o");
-        registerUserRequest.setPhone("123456789");
         registerUserRequest.setGender(UserGender.FEMALE);
         registerUserRequest.setEmail("belloharyourmidey@gmail.com");
         registerUserRequest.setPassword("password");
         registerUserRequest.setLastName("Hakeem");
         registerUserRequest.setFirstName("Bello");
         registerUserRequest.setRole(UserRoles.DOCTOR);
+        registerUserRequest.setPhoneNumber("123456789");
+
         registerUserRequest.setLicenseId("012345");
         registerUserRequest.setSpecialization("paedetrician");
 
@@ -85,7 +87,7 @@ class UserServiceImplementationTest {
         RegisterUserRequest registerUserRequest = new RegisterUserRequest();
         registerUserRequest.setAge(20);
         registerUserRequest.setAddress("3, Ebute Olowo Street, Okepopo");
-        registerUserRequest.setPhone("123456789");
+        registerUserRequest.setPhoneNumber("123456789");
         registerUserRequest.setGender(UserGender.MALE);
         registerUserRequest.setEmail("pee@gmail.com");
         registerUserRequest.setPassword("ola");
@@ -102,7 +104,7 @@ class UserServiceImplementationTest {
         RegisterUserRequest registerUserRequest = new RegisterUserRequest();
         registerUserRequest.setAge(20);
         registerUserRequest.setAddress("3, Ebute Olowo Street, Allen");
-        registerUserRequest.setPhone("123456789");
+        registerUserRequest.setPhoneNumber("123456789");
         registerUserRequest.setGender(UserGender.MALE);
         registerUserRequest.setEmail("raheemhawanat@gmail.com");
         registerUserRequest.setPassword("password");
@@ -119,7 +121,7 @@ class UserServiceImplementationTest {
         RegisterUserRequest registerUserRequest = new RegisterUserRequest();
         registerUserRequest.setAge(20);
         registerUserRequest.setAddress("3, Ebute Olowo Street, Okepopo");
-        registerUserRequest.setPhone("123456789");
+        registerUserRequest.setPhoneNumber("123456789");
         registerUserRequest.setGender(UserGender.MALE);
         registerUserRequest.setEmail("");
         registerUserRequest.setPassword("reddit");
@@ -136,7 +138,7 @@ class UserServiceImplementationTest {
         RegisterUserRequest registerUserRequest = new RegisterUserRequest();
         registerUserRequest.setAge(20);
         registerUserRequest.setAddress("3, Ebute Olowo Street, Okepopo");
-        registerUserRequest.setPhone("123456789");
+        registerUserRequest.setPhoneNumber("123456789");
         registerUserRequest.setGender(UserGender.MALE);
         registerUserRequest.setEmail("Mastr@gmail.com");
         registerUserRequest.setPassword("");
@@ -188,7 +190,7 @@ class UserServiceImplementationTest {
         registerUserRequest.setFirstName("Feyi");
         registerUserRequest.setLastName("Meyi");
         registerUserRequest.setGender(UserGender.MALE);
-        registerUserRequest.setPhone("123456789");
+        registerUserRequest.setPhoneNumber("123456789");
         registerUserRequest.setAddress("ayyGWGFIWHDHSUD");
         registerUserRequest.setEmail("olamide@gmail.com");
 
@@ -205,7 +207,7 @@ class UserServiceImplementationTest {
         registerUserRequest.setFirstName("Suli");
         registerUserRequest.setLastName("Oderinde");
         registerUserRequest.setGender(UserGender.FEMALE);
-        registerUserRequest.setPhone("08091234657");
+        registerUserRequest.setPhoneNumber("08091234657");
         registerUserRequest.setAddress("3, Sango otta, Ogun State");
         registerUserRequest.setEmail("yetuns1122@gmail.com");
         RegisterUserResponse response = userService.registerUser(registerUserRequest);
@@ -223,7 +225,7 @@ class UserServiceImplementationTest {
         registerUserRequest.setFirstName("Suliat");
         registerUserRequest.setLastName("Oderinde");
         registerUserRequest.setGender(UserGender.FEMALE);
-        registerUserRequest.setPhone("08091234657");
+        registerUserRequest.setPhoneNumber("08091234657");
         registerUserRequest.setAddress("3, Sango otta, Ogun State");
         registerUserRequest.setEmail("wisdom@gmail.com");
 
@@ -237,7 +239,7 @@ class UserServiceImplementationTest {
         RegisterUserRequest registerUserRequest = new RegisterUserRequest();
         registerUserRequest.setAge(40);
         registerUserRequest.setAddress("3, Ebute Olowo Street, Okepop o");
-        registerUserRequest.setPhone("123456789");
+        registerUserRequest.setPhoneNumber("123456789");
         registerUserRequest.setGender(UserGender.FEMALE);
         registerUserRequest.setEmail("rashid@gmail.com");
         registerUserRequest.setPassword("password");

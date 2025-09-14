@@ -1,7 +1,11 @@
 package africa.semicolon.Services;
 
+import africa.semicolon.Exceptions.ComplaintNotFoundException;
 import africa.semicolon.Exceptions.UserNotFound;
+import africa.semicolon.data.models.Complaint;
+import africa.semicolon.data.models.ComplaintStatus;
 import africa.semicolon.data.models.Doctors;
+import africa.semicolon.data.repositories.ComplaintRepository;
 import africa.semicolon.data.repositories.DoctorRepository;
 import africa.semicolon.data.repositories.UserRepository;
 import africa.semicolon.dtos.requests.RemoveDoctorRequest;
@@ -21,9 +25,13 @@ public class AdminServiceImplementation implements AdminService{
     @Autowired
     private UserRepository userRepository;
 
-
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private ComplaintRepository complaintRepository;
+
+
     @Override
     public VerifyDoctorResponse verifyDoctor(VerifyDoctorRequest request) {
         Optional<Doctors> doctor = Optional
@@ -68,6 +76,28 @@ public class AdminServiceImplementation implements AdminService{
         response.setMessage("Account removed successfully");
         return response;
     }
+
+    @Override
+    public Complaint assignDoctor(String complaintId, String doctorId) {
+        Complaint complaint = complaintRepository.findById(complaintId)
+                .orElseThrow(() -> new ComplaintNotFoundException("Complaint not found"));
+
+        Doctors assignedDoctor = doctorRepository.findById(doctorId)
+                .orElseThrow(() -> new UserNotFound("Doctor not found"));
+
+        if (!assignedDoctor.isAvailable()) {
+            throw new IllegalArgumentException("Doctor is not available");
+        }
+
+        complaint.setDoctorId(doctorId);
+        complaint.setStatus(ComplaintStatus.ASSIGNED);
+
+        assignedDoctor.setAvailable(false);
+
+        doctorRepository.save(assignedDoctor);
+        return complaintRepository.save(complaint);
+    }
+
 
 
 }

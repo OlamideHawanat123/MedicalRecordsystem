@@ -1,5 +1,6 @@
 package africa.semicolon.Services;
 
+import africa.semicolon.data.models.Complaint;
 import africa.semicolon.dtos.requests.RemoveDoctorRequest;
 import africa.semicolon.dtos.responses.RemoveDoctorResponse;
 import africa.semicolon.dtos.requests.VerifyDoctorRequest;
@@ -11,4 +12,6 @@ public interface AdminService {
 
 
     RemoveDoctorResponse removeDoctor(RemoveDoctorRequest request);
+
+    Complaint assignDoctor(String complaintId, String doctorId);
 }

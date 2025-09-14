@@ -1,19 +1,33 @@
 package africa.semicolon.Services;
 
+import africa.semicolon.data.models.Complaint;
+import africa.semicolon.data.models.Doctors;
+import africa.semicolon.data.repositories.ComplaintRepository;
+import africa.semicolon.data.repositories.DoctorRepository;
 import africa.semicolon.dtos.requests.LodgeComplaintRequest;
 import africa.semicolon.dtos.responses.LodgeComplaintResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class MedicalServiceImplementationTest {
 
     @Autowired
     private MedicalService medicalService;
+
+    @Autowired
+    private DoctorRepository doctorRepo;
+
+    @Autowired
+    private AdminService adminService;
+
+    @Autowired
+    private ComplaintRepository complaintRepo;
 
     @Test
     public void testThatAPatientCanLodgeAComplaint(){
@@ -25,4 +39,22 @@ public class MedicalServiceImplementationTest {
         assertNotNull(response);
         assertEquals("Complaint lodged successfully", response.getMessage());
     }
+
+    @Test
+    public void testThatUserCanGetTheirComplaintsVisitedByAssigningDoctor() {
+        Doctors assignedDoctor = doctorRepo.findDoctorsByEmail("belloharyourmidey@gmail.com")
+                .orElseThrow();
+        Complaint complaint = complaintRepo.findComplaintByTitleIgnoreCase("Severe Headache")
+                .orElseThrow();
+
+        Complaint updatedComplaint = adminService.assignDoctor(complaint.getId(), assignedDoctor.getId());
+
+        Doctors refreshedDoctor = doctorRepo.findById(assignedDoctor.getId()).orElseThrow();
+        Complaint refreshedComplaint = complaintRepo.findById(complaint.getId()).orElseThrow();
+
+        assertFalse(refreshedDoctor.isAvailable());
+        assertEquals("ASSIGNED", refreshedComplaint.getStatus().name());
+        assertEquals("ASSIGNED", updatedComplaint.getStatus().name());
+    }
+
 }
