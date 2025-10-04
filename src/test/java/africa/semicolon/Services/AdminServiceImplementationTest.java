@@ -15,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AdminServiceImplementationTest {
     @Autowired
     private AdminService adminService;
+     
     @Autowired
     private DoctorRepository doctorRepository;
 
