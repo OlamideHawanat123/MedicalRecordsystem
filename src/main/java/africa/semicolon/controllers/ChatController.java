@@ -24,6 +24,7 @@ public class ChatController {
         return chatMessage;
     }
 
+
     @MessageMapping("/private-message")
     public void sendPrivateMessage(@Payload ChatMessage chatMessage) {
         messagingTemplate.convertAndSendToUser(
@@ -32,6 +33,7 @@ public class ChatController {
                 chatMessage
         );
     }
+
 
 }
 
