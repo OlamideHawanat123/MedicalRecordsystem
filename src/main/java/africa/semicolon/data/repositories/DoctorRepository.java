@@ -18,6 +18,8 @@ public interface DoctorRepository extends MongoRepository<Doctors, String> {
 
     Optional<Doctors> findDoctorsByEmail(String email);
 
+    Doctors findDoctorsByFirstNameIgnoreCase(String name);
+
     @Query("{'isLicensedVerified' : false}")
     List<Doctors> findDoctorsByIsLicensedVerifiedFalse();
 

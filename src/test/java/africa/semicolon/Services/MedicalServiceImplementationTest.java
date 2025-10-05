@@ -5,7 +5,9 @@ import africa.semicolon.data.models.Doctors;
 import africa.semicolon.data.repositories.ComplaintRepository;
 import africa.semicolon.data.repositories.DoctorRepository;
 import africa.semicolon.dtos.requests.LodgeComplaintRequest;
+import africa.semicolon.dtos.requests.PrescribeDrugRequest;
 import africa.semicolon.dtos.responses.LodgeComplaintResponse;
+import africa.semicolon.dtos.responses.PrescribeDrugResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -57,13 +59,14 @@ public class MedicalServiceImplementationTest {
         assertEquals("ASSIGNED", updatedComplaint.getStatus().name());
     }
 
-//    @Test
-//    public void testThatDoctorCanPrescribeDrugForPatient(){
-//        PrescribeDrugRequest request = new PrescribeDrugRequest();
-//        request.setDrugName("Flagyl");
-//        request.setNote("Sleep well and eat alot of vegetables");
-//        request.setName("Florence Florence");
-//        request.set
-//    }
+    @Test
+    public void testThatDoctorCanPrescribeDrugForPatient(){
+        PrescribeDrugRequest request = new PrescribeDrugRequest();
+        request.setNote("Sleep well and eat alot of vegetables");
+        request.setPatientName("Florence Florence");
+        PrescribeDrugResponse response = medicalService.prescribeDrug(request);
+
+        assertEquals("Drug prescription successfully done", response.getMessage());
+    }
 
 }
