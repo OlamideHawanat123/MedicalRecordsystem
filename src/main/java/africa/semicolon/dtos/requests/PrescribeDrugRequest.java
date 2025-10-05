@@ -10,6 +10,6 @@ import java.util.List;
 public class PrescribeDrugRequest {
     private List<String> DrugName;
     private String note;
-    private String patientName;
-    private String doctorName;
+    private String patientEmail;
+    private String doctorEmail;
 }

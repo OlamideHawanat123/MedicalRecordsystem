@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface PatientRepository extends MongoRepository<Patient, String> {
     boolean existsByEmail(String email);
-    Patient findPatientByNameIgnoreCase(String name);
+    Patient findPatientByEmailIgnoreCase(String email);
 }

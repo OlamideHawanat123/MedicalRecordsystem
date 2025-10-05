@@ -2,7 +2,9 @@ package africa.semicolon.Utils;
 
 import africa.semicolon.data.models.*;
 import africa.semicolon.dtos.requests.LodgeComplaintRequest;
+import africa.semicolon.dtos.requests.PrescribeDrugRequest;
 import africa.semicolon.dtos.requests.RegisterUserRequest;
+import africa.semicolon.dtos.responses.PrescribeDrugResponse;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.time.Instant;
@@ -92,5 +94,25 @@ public class Mapper {
         complaint.setCreatedAt(Instant.now());
         complaint.setStartDate(request.getStartDate());
         return complaint;
+    }
+
+    public static Prescription mapRequestToPrescription(PrescribeDrugRequest request){
+        Prescription prescription = new Prescription();
+        prescription.setDatePrescribed(Instant.now());
+        prescription.setNotes(request.getNote());
+        prescription.setDrugName(request.getDrugName());
+        return prescription;
+    }
+
+    public static PrescribeDrugResponse mapPrescriptionToResponse(Prescription prescription){
+        PrescribeDrugResponse response = new PrescribeDrugResponse();
+        response.setId(prescription.getId());
+        response.setDrugName(prescription.getDrugName());
+        response.setDatePrescribed(prescription.getDatePrescribed());
+        response.setMessage("Drug prescription successfully done");
+        response.setDatePrescribed(prescription.getDatePrescribed());
+        response.setDoctorId(prescription.getDoctorId());
+        response.setPatientId(prescription.getPatientId());
+        return response;
     }
 }

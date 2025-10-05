@@ -18,7 +18,7 @@ public interface DoctorRepository extends MongoRepository<Doctors, String> {
 
     Optional<Doctors> findDoctorsByEmail(String email);
 
-    Doctors findDoctorsByFirstNameIgnoreCase(String name);
+    Doctors findDoctorsByEmailIgnoreCase(String email);
 
     @Query("{'isLicensedVerified' : false}")
     List<Doctors> findDoctorsByIsLicensedVerifiedFalse();
@@ -27,3 +27,4 @@ public interface DoctorRepository extends MongoRepository<Doctors, String> {
     List<Doctors> findDoctorsByIsAvailableTrue();
 
 }
+
