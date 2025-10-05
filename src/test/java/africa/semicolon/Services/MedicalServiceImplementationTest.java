@@ -57,4 +57,13 @@ public class MedicalServiceImplementationTest {
         assertEquals("ASSIGNED", updatedComplaint.getStatus().name());
     }
 
+//    @Test
+//    public void testThatDoctorCanPrescribeDrugForPatient(){
+//        PrescribeDrugRequest request = new PrescribeDrugRequest();
+//        request.setDrugName("Flagyl");
+//        request.setNote("Sleep well and eat alot of vegetables");
+//        request.setName("Florence Florence");
+//        request.set
+//    }
+
 }

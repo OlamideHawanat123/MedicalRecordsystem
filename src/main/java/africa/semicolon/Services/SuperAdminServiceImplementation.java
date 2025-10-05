@@ -1,13 +1,11 @@
 package africa.semicolon.Services;
 
-import africa.semicolon.Exceptions.UserNotFound;
 import africa.semicolon.data.models.Admin;
 import africa.semicolon.data.repositories.AdminRepository;
 import africa.semicolon.dtos.requests.RemoveAdminRequest;
 import africa.semicolon.dtos.responses.RemoveAdminResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 @Service
