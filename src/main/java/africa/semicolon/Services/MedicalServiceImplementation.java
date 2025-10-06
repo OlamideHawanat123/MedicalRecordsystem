@@ -49,6 +49,7 @@ public class MedicalServiceImplementation implements MedicalService{
     public PrescribeDrugResponse prescribeDrug(PrescribeDrugRequest request) {
         String doctorId = doctorRepo.findDoctorsByEmailIgnoreCase(request.getDoctorEmail()).getId();
         String patientId = patientRepo.findPatientByEmailIgnoreCase(request.getPatientEmail()).getId();
+
         Prescription prescription = Mapper.mapRequestToPrescription(request);
         prescription.setPatientId(patientId);
         prescription.setDoctorId(doctorId);
