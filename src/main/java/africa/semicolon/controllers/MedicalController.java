@@ -4,7 +4,9 @@ import africa.semicolon.Services.MedicalService;
 import africa.semicolon.data.models.Doctors;
 import africa.semicolon.data.repositories.DoctorRepository;
 import africa.semicolon.dtos.requests.LodgeComplaintRequest;
+import africa.semicolon.dtos.requests.PrescribeDrugRequest;
 import africa.semicolon.dtos.responses.LodgeComplaintResponse;
+import africa.semicolon.dtos.responses.PrescribeDrugResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,10 @@ public class MedicalController {
   }
 
   @PostMapping("prescribeDrug")
+    public ResponseEntity<?> prescribeDrug(@RequestBody PrescribeDrugRequest request){
+      PrescribeDrugResponse response = medicalService.prescribeDrug(request);
+      return ResponseEntity.status(HttpStatus.OK).body(response);
+  }
 
 
 }
