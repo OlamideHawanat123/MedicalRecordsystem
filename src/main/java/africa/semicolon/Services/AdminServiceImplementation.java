@@ -45,7 +45,6 @@ public class AdminServiceImplementation implements AdminService{
         response.setMessage("Check your email for message");
         emailService.sendVerificationToDoctor(doctor.get());
         return response;
-
     }
 
     @Override

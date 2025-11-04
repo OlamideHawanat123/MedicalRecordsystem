@@ -14,7 +14,6 @@ import africa.semicolon.dtos.responses.LodgeComplaintResponse;
 import africa.semicolon.dtos.responses.PrescribeDrugResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.Instant;
 
 @Service
@@ -30,7 +29,6 @@ public class MedicalServiceImplementation implements MedicalService{
 
     @Autowired
     private PrescriptionRepository prescriptionRepository;
-
 
 
     @Override
